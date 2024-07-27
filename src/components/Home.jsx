@@ -4,6 +4,8 @@ import BoardHeader from './BoardHeader';
 import Column from './Column';
 import TaskForm from './TaskForm';
 
+import { updateTheme } from '../utils/themeUtils';
+import { loadBoards, saveBoards } from '../utils/storageUtils';
 import { getBoardById, handleAddBoard, handleDeleteBoard } from '../utils/boardUtils';
 import { getColumnsByBoardId } from '../utils/columnUtils';
 import { getTasksByColumnId, handleAddTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
@@ -14,54 +16,64 @@ function Home() {
   const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
-    const savedBoards = JSON.parse(localStorage.getItem('boards')) || [];
-    setBoards(savedBoards);
+    updateTheme();
   }, []);
 
   useEffect(() => {
-    if (selectedBoardId !== null) {
-      localStorage.setItem('boards', JSON.stringify(boards));
-    }
+    setBoards(loadBoards());
+  }, []);
+
+  useEffect(() => {
+    saveBoards(boards);
   }, [boards, selectedBoardId]);
 
-  return (
-    <div className="home">
-      <TopBar
-        boards={boards}
-        onBoardSelect={setSelectedBoardId}
-        onAddBoard={handleAddBoard}
-        onDeleteBoard={handleDeleteBoard}
-      />
-      {selectedBoardId && (
-        <div>
-          <BoardHeader
-            board={getBoardById}
-            onDeleteBoard={handleDeleteBoard}
-          />
-          <div className="columns">
-            {getColumnsByBoardId.map(column => (
-              <Column
-                key={column.id}
-                column={column}
-                tasks={getTasksByColumnId}
-                onAddTask={handleAddTask}
-                onTaskEdit={setEditingTask}
-                onTaskDelete={handleDeleteTask}
-                onTaskMove={handleTaskMove}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-      {editingTask && (
-        <TaskForm
-          task={editingTask}
-          onSave={handleSaveTask}
-          onCancel={() => setEditingTask(null)}
+  if (boards.length === 0) {
+    return (
+      <main className='flex flex-col justify-center items-center h-screen bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
+        <h1>You have no boards yet.</h1>
+        <button onClick={handleAddBoard}>Add board</button>
+      </main>
+    );
+  } else {
+    return (
+      <div className="home">
+        <TopBar
+          boards={boards}
+          onBoardSelect={setSelectedBoardId}
+          onAddBoard={handleAddBoard}
+          onDeleteBoard={handleDeleteBoard}
         />
-      )}
-    </div>
-  );
+        {selectedBoardId && (
+          <div>
+            <BoardHeader
+              board={getBoardById}
+              onDeleteBoard={handleDeleteBoard}
+            />
+            <div className="columns">
+              {getColumnsByBoardId.map(column => (
+                <Column
+                  key={column.id}
+                  column={column}
+                  tasks={getTasksByColumnId}
+                  onAddTask={handleAddTask}
+                  onTaskEdit={setEditingTask}
+                  onTaskDelete={handleDeleteTask}
+                  onTaskMove={handleTaskMove}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        {editingTask && (
+          <TaskForm
+            task={editingTask}
+            onSave={handleSaveTask}
+            onCancel={() => setEditingTask(null)}
+          />
+        )}
+      </div>
+    );
+  }
 }
 
 export default Home
