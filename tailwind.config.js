@@ -14,7 +14,7 @@ export default {
         'dark-bg': '#171717',
         'dark-bg-faded': '#212121',
         'dark-bg-inactive': '#050505',
-        'light-text': '#OOO',
+        'light-text': '#000',
         'dark-text': '#B4B4B4',
       },
     },

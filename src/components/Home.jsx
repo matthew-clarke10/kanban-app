@@ -29,39 +29,58 @@ const Home = () => {
     console.log(selectedBoardName);
   }, [boards, selectedBoardName]);
 
+  // No boards created yet.
   if (boards.length === 0 && !isAddingBoard) {
     return (
-      <main className='flex flex-col justify-center items-center h-screen bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
-        <h2>You have no boards yet.</h2>
-        <button onClick={() => { startAddingBoard(setIsAddingBoard) }}>Add board</button>
+      <main className='flex flex-col items-center min-h-screen p-2 text-2xl bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
+        <h1 className='text-4xl text-center'>KanBan Boards</h1>
+        <section className='flex flex-1 flex-col justify-center items-center h-full gap-y-2'>
+          <h2>Click to add a new board</h2>
+          <button onClick={() => { startAddingBoard(setIsAddingBoard) }} className='flex justify-center items-center px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Add board</button>
+        </section>
       </main>
     );
   }
 
+  // No boards created but the user is creating one now.
+  if (boards.length === 0 && isAddingBoard) {
+    return (
+      <main className='flex flex-col items-center min-h-screen p-2 text-2xl bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
+        <h1 className='text-4xl text-center'>KanBan Boards</h1>
+        <section className='flex flex-1 flex-col justify-center items-center h-full gap-y-2'>
+          <h2>New Board</h2>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            saveNewBoard(newBoardName, setIsAddingBoard, setBoards, setSelectedBoardName);
+          }}
+            className='flex flex-col gap-y-4'>
+            <input
+              type="text"
+              placeholder="Enter name"
+              value={newBoardName}
+              onChange={(e) => setNewBoardName(e.target.value)}
+              required
+              className='rounded-full px-4 py-2 bg-light-bg-faded text-light-text dark:bg-dark-bg-faded dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text'
+            />
+            <div className='flex justify-evenly'>
+              <button type='submit' className='w-28 px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Save</button>
+              <button type='button' onClick={() => { cancelAddingBoard(setIsAddingBoard) }} className='w-28 px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Cancel</button>
+            </div>
+          </form>
+        </section>
+      </main>
+    );
+  }
+
+  // User has at least one board created.
   return (
-    <div className="home">
+    <main className='flex flex-col min-h-screen p-2 bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
+      <h1 className='text-4xl text-center'>KanBan Boards</h1>
       <TopBar
         boards={boards}
         onBoardSelect={setSelectedBoardName}
         onAddBoard={handleAddBoard}
-        onDeleteBoard={handleDeleteBoard}
       />
-      {isAddingBoard && (
-        <div>
-          <h2>Add New Board</h2>
-          <form onSubmit={() => { saveNewBoard(newBoardName, setIsAddingBoard, setBoards, setSelectedBoardName) }}>
-            <input
-              type="text"
-              placeholder="Board Name"
-              value={newBoardName}
-              onChange={(e) => setNewBoardName(e.target.value)}
-              required
-            />
-            <button type="submit">Save</button>
-            <button type="button" onClick={() => { cancelAddingBoard(setIsAddingBoard) }}>Cancel</button>
-          </form>
-        </div>
-      )}
       {selectedBoardName && (
         <div>
           <BoardHeader
@@ -90,7 +109,7 @@ const Home = () => {
           onCancel={() => setEditingTask(null)}
         />
       )}
-    </div>
+    </main>
   );
 };
 
