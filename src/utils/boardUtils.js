@@ -68,7 +68,3 @@ export const removeBoard = (removedBoardName, selectedBoardName, setRemovedBoard
   setIsRemovingBoard(false);
   setRemovedBoardName('');
 };
-
-export const handleDeleteBoard = () => {
-  // TO-DO
-};
