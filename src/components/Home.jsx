@@ -5,7 +5,7 @@ import Column from './Column';
 import TaskForm from './TaskForm';
 
 import { updateTheme } from '../utils/themeUtils';
-import { getBoardByName, loadBoards, startAddingBoard, startRemovingBoard, cancelAddingBoard, cancelRemovingBoard, isValidBoardName, saveNewBoard, removeBoard, handleDeleteBoard } from '../utils/boardUtils';
+import { getBoardByName, loadBoards, startAddingBoard, startRemovingBoard, cancelAddingBoard, cancelRemovingBoard, isValidBoardName, saveNewBoard, removeBoard } from '../utils/boardUtils';
 import { getColumnsByBoardName } from '../utils/columnUtils';
 import { getTasksByColumnName, handleAddTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
 
@@ -122,7 +122,6 @@ const Home = () => {
         <div>
           <BoardHeader
             board={getBoardByName}
-            onDeleteBoard={handleDeleteBoard}
           />
           <div className="columns">
             {getColumnsByBoardName(selectedBoardName).map(column => (
