@@ -1,7 +1,7 @@
-function TaskForm() {
+const TaskForm = () => {
   return (
     <div>TaskForm</div>
   );
-}
+};
 
-export default TaskForm
+export default TaskForm;

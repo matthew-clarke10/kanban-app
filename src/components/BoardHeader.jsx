@@ -1,7 +1,7 @@
-function BoardHeader() {
+const BoardHeader = () => {
   return (
     <div>BoardHeader</div>
   );
-}
+};
 
-export default BoardHeader
+export default BoardHeader;

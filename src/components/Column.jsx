@@ -1,7 +1,7 @@
-function Column() {
+const Column = () => {
   return (
     <div>Column</div>
   );
-}
+};
 
-export default Column
+export default Column;

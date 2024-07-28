@@ -9,7 +9,7 @@ import { getBoardByName, loadBoards, startAddingBoard, cancelAddingBoard, saveNe
 import { getColumnsByBoardName } from '../utils/columnUtils';
 import { getTasksByColumnName, handleAddTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
 
-function Home() {
+const Home = () => {
   const [boards, setBoards] = useState([]);
   const [isAddingBoard, setIsAddingBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState('');
@@ -92,6 +92,6 @@ function Home() {
       )}
     </div>
   );
-}
+};
 
-export default Home
+export default Home;
