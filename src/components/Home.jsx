@@ -5,14 +5,15 @@ import Column from './Column';
 import TaskForm from './TaskForm';
 
 import { updateTheme } from '../utils/themeUtils';
-import { loadBoards, saveBoards } from '../utils/storageUtils';
-import { getBoardById, handleAddBoard, handleDeleteBoard } from '../utils/boardUtils';
-import { getColumnsByBoardId } from '../utils/columnUtils';
-import { getTasksByColumnId, handleAddTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
+import { getBoardByName, loadBoards, startAddingBoard, cancelAddingBoard, saveNewBoard, handleAddBoard, handleDeleteBoard } from '../utils/boardUtils';
+import { getColumnsByBoardName } from '../utils/columnUtils';
+import { getTasksByColumnName, handleAddTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
 
 function Home() {
   const [boards, setBoards] = useState([]);
-  const [selectedBoardId, setSelectedBoardId] = useState(null);
+  const [isAddingBoard, setIsAddingBoard] = useState(false);
+  const [newBoardName, setNewBoardName] = useState('');
+  const [selectedBoardName, setSelectedBoardName] = useState(null);
   const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
@@ -20,60 +21,77 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    setBoards(loadBoards());
+    setBoards(loadBoards(setSelectedBoardName));
   }, []);
 
   useEffect(() => {
-    saveBoards(boards);
-  }, [boards, selectedBoardId]);
+    console.log(boards);
+    console.log(selectedBoardName);
+  }, [boards, selectedBoardName]);
 
-  if (boards.length === 0) {
+  if (boards.length === 0 && !isAddingBoard) {
     return (
       <main className='flex flex-col justify-center items-center h-screen bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
-        <h1>You have no boards yet.</h1>
-        <button onClick={handleAddBoard}>Add board</button>
+        <h2>You have no boards yet.</h2>
+        <button onClick={() => { startAddingBoard(setIsAddingBoard) }}>Add board</button>
       </main>
     );
-  } else {
-    return (
-      <div className="home">
-        <TopBar
-          boards={boards}
-          onBoardSelect={setSelectedBoardId}
-          onAddBoard={handleAddBoard}
-          onDeleteBoard={handleDeleteBoard}
-        />
-        {selectedBoardId && (
-          <div>
-            <BoardHeader
-              board={getBoardById}
-              onDeleteBoard={handleDeleteBoard}
-            />
-            <div className="columns">
-              {getColumnsByBoardId.map(column => (
-                <Column
-                  key={column.id}
-                  column={column}
-                  tasks={getTasksByColumnId}
-                  onAddTask={handleAddTask}
-                  onTaskEdit={setEditingTask}
-                  onTaskDelete={handleDeleteTask}
-                  onTaskMove={handleTaskMove}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-        {editingTask && (
-          <TaskForm
-            task={editingTask}
-            onSave={handleSaveTask}
-            onCancel={() => setEditingTask(null)}
-          />
-        )}
-      </div>
-    );
   }
+
+  return (
+    <div className="home">
+      <TopBar
+        boards={boards}
+        onBoardSelect={setSelectedBoardName}
+        onAddBoard={handleAddBoard}
+        onDeleteBoard={handleDeleteBoard}
+      />
+      {isAddingBoard && (
+        <div>
+          <h2>Add New Board</h2>
+          <form onSubmit={() => { saveNewBoard(newBoardName, setIsAddingBoard, setBoards, setSelectedBoardName) }}>
+            <input
+              type="text"
+              placeholder="Board Name"
+              value={newBoardName}
+              onChange={(e) => setNewBoardName(e.target.value)}
+              required
+            />
+            <button type="submit">Save</button>
+            <button type="button" onClick={() => { cancelAddingBoard(setIsAddingBoard) }}>Cancel</button>
+          </form>
+        </div>
+      )}
+      {selectedBoardName && (
+        <div>
+          <BoardHeader
+            board={getBoardByName}
+            onDeleteBoard={handleDeleteBoard}
+          />
+          <div className="columns">
+            {getColumnsByBoardName(selectedBoardName).map(column => (
+              <Column
+                key={column.name}
+                column={column.name}
+                tasks={getTasksByColumnName}
+                onAddTask={handleAddTask}
+                onTaskEdit={setEditingTask}
+                onTaskDelete={handleDeleteTask}
+                onTaskMove={handleTaskMove}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      {editingTask && (
+        <TaskForm
+          task={editingTask}
+          onSave={handleSaveTask}
+          onCancel={() => setEditingTask(null)}
+        />
+      )}
+    </div>
+  );
 }
 
 export default Home

@@ -1,4 +1,4 @@
-export const getTasksByColumnId = () => {
+export const getTasksByColumnName = () => {
   // TO-DO
 };
 
