@@ -16,6 +16,7 @@ const Home = () => {
   const [validBoardName, setValidBoardName] = useState(true);
   const [isRemovingBoard, setIsRemovingBoard] = useState(false);
   const [removedBoardName, setRemovedBoardName] = useState('');
+  const [selectedRemovedBoardName, setSelectedRemovedBoardName] = useState(false);
   const [selectedBoardName, setSelectedBoardName] = useState(null);
   const [editingTask, setEditingTask] = useState(null);
 
@@ -31,6 +32,7 @@ const Home = () => {
     setNewBoardName('');
     setValidBoardName(true);
     setRemovedBoardName('');
+    setSelectedRemovedBoardName(false);
   }, [boards, selectedBoardName, isAddingBoard, isRemovingBoard]);
 
   // No boards created yet.
@@ -98,8 +100,18 @@ const Home = () => {
               </button>
             ))}
           </section>
+          {selectedRemovedBoardName && (
+            <div className='text-center'>Select a Board</div>
+          )}
           <div className='flex justify-evenly gap-4 text-lg my-2'>
-            <button type='button' onClick={() => { removeBoard(removedBoardName, selectedBoardName, setRemovedBoardName, setIsRemovingBoard, setBoards, setSelectedBoardName); }} className='w-28 px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Remove</button>
+            <button type='button' onClick={() => {
+              if (removedBoardName === '') {
+                setSelectedRemovedBoardName(true);
+              } else {
+                removeBoard(removedBoardName, selectedBoardName, setRemovedBoardName, setIsRemovingBoard, setBoards, setSelectedBoardName);
+                setSelectedRemovedBoardName(false);
+              }
+            }} className='w-28 px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Remove</button>
             <button type='button' onClick={() => { cancelRemovingBoard(setIsRemovingBoard) }} className='w-28 px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Cancel</button>
           </div>
         </section>
@@ -121,7 +133,7 @@ const Home = () => {
       {selectedBoardName && (
         <div>
           <BoardHeader
-            board={getBoardByName}
+            name={selectedBoardName}
           />
           <div className="columns">
             {getColumnsByBoardName(selectedBoardName).map(column => (

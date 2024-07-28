@@ -1,7 +1,13 @@
-const BoardHeader = () => {
+import PropTypes from 'prop-types';
+
+const BoardHeader = ({ name }) => {
   return (
-    <div>BoardHeader</div>
+    <div>{name}</div>
   );
+};
+
+BoardHeader.propTypes = {
+  name: PropTypes.string.isRequired,
 };
 
 export default BoardHeader;
