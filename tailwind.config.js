@@ -16,6 +16,8 @@ export default {
         'dark-bg-inactive': '#050505',
         'light-text': '#000',
         'dark-text': '#B4B4B4',
+        'light-board': '#3B82F6',
+        'dark-board': '#4338CA',
       },
     },
   },
