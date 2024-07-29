@@ -135,7 +135,7 @@ const Home = () => {
           {getColumnsByBoardName(selectedBoardName).map((column, index) => (
             <section
               key={column.name}
-              className={`flex-1 bg-light-bg-tertiary dark:bg-dark-bg-tertiary w-full' md:flex-1 border-b-1 md:border-b-0 ${index > 0 ? 'md:border-l' : ''} ${index < getColumnsByBoardName(selectedBoardName).length - 1 ? 'md:border-r' : ''} border-light-text dark:border-dark-text`}
+              className={`flex flex-col flex-1 bg-light-bg-tertiary dark:bg-dark-bg-tertiary w-full' md:flex-1 border-b-1 md:border-b-0 ${index > 0 ? 'md:border-l' : ''} ${index < getColumnsByBoardName(selectedBoardName).length - 1 ? 'md:border-r' : ''} border-light-text dark:border-dark-text`}
             >
               <Column
                 key={column.name}

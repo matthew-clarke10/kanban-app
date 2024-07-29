@@ -9,8 +9,8 @@ export default {
     extend: {
       colors: {
         'light-bg-primary': '#FFFFFF',
-        'light-bg-secondary': '#F5F5F5',
-        'light-bg-tertiary': '#E0E0E0',
+        'light-bg-secondary': '#E0E0E0',
+        'light-bg-tertiary': '#F5F5F5',
         'light-bg-inactive': '#7F7F7F',
         'dark-bg-primary': '#171717',
         'dark-bg-secondary': '#2C2C2C',

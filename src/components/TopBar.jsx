@@ -6,7 +6,7 @@ const TopBar = ({ boards, selectedBoardName, onBoardSelect, onAddBoard, onDelete
   return (
     <nav className='flex items-center flex-wrap min-h-8 gap-2 p-4'>
       {boards.map(board => (
-        <button key={board.name} onClick={() => onBoardSelect(board.name)} title={board.name} className={`flex justify-center items-center w-24 p-1 rounded-lg border-2 text-xs border-light-text dark:border-dark-text ${selectedBoardName === board.name ? 'bg-light-board dark:bg-dark-board' : 'bg-light-bg-secondary dark:bg-dark-bg-secondary hover:bg-light-board dark:hover:bg-dark-board hover:opacity-80'}`}>
+        <button key={board.name} onClick={() => onBoardSelect(board.name)} title={board.name} className={`flex justify-center items-center w-24 p-1 rounded-lg border-2 text-xs border-light-text dark:border-dark-text ${selectedBoardName === board.name ? 'bg-light-board dark:bg-dark-board hover:cursor-default' : 'bg-light-bg-secondary dark:bg-dark-bg-secondary hover:bg-light-board dark:hover:bg-dark-board hover:opacity-80'}`}>
           <span className={`overflow-hidden text-ellipsis whitespace-nowrap ${selectedBoardName === board.name ? 'bg-light-board dark:bg-dark-board' : ''}`}>{board.name}</span>
         </button>
       ))}
