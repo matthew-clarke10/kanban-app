@@ -38,7 +38,7 @@ const Home = () => {
   // No boards created yet.
   if (boards.length === 0 && !isAddingBoard) {
     return (
-      <main className='flex flex-col items-center min-h-screen p-2 text-2xl bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
+      <main className='flex flex-col items-center min-h-screen p-2 text-2xl bg-light-bg-primary text-light-text dark:bg-dark-bg-primary dark:text-dark-text'>
         <h1 className='text-4xl text-center'>KanBan Boards</h1>
         <section className='flex flex-1 flex-col justify-center items-center h-full gap-y-2'>
           <h2>Click to add a new board</h2>
@@ -51,7 +51,7 @@ const Home = () => {
   // User is creating a board now.
   if (isAddingBoard) {
     return (
-      <main className='flex flex-col items-center min-h-screen p-2 text-2xl bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
+      <main className='flex flex-col items-center min-h-screen p-2 text-2xl bg-light-bg-primary text-light-text dark:bg-dark-bg-primary dark:text-dark-text'>
         <h1 className='text-4xl text-center'>KanBan Boards</h1>
         <section className='flex flex-1 flex-col justify-center items-center h-full gap-y-2'>
           <h2>New Board</h2>
@@ -71,7 +71,7 @@ const Home = () => {
               value={newBoardName}
               onChange={(e) => setNewBoardName(e.target.value)}
               required
-              className='rounded-full px-4 py-2 bg-light-bg-faded text-light-text dark:bg-dark-bg-faded dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text'
+              className='rounded-full px-4 py-2 bg-light-bg-secondary text-light-text dark:bg-dark-bg-secondary dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text'
             />
             {!validBoardName && (
               <div className='text-center'>Name is Taken</div>
@@ -89,13 +89,13 @@ const Home = () => {
   // User is removing a board now.
   if (isRemovingBoard) {
     return (
-      <main className='flex flex-col items-center min-h-screen p-2 text-2xl bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
+      <main className='flex flex-col items-center min-h-screen p-2 text-2xl bg-light-bg-primary text-light-text dark:bg-dark-bg-primary dark:text-dark-text'>
         <h1 className='text-4xl text-center'>KanBan Boards</h1>
         <section className='flex flex-1 flex-col justify-center items-center h-full w-4/5 sm:w-[500px] gap-y-2'>
           <h2 className='text-2xl mt-4 mb-2'>Remove Board</h2>
           <section className='flex flex-col gap-2 w-full'>
             {boards.map(board => (
-              <button key={board.name} onClick={() => setRemovedBoardName(board.name)} title={board.name} className={`flex justify-center items-center w-full py-4 border-2 text-lg border-light-text dark:border-dark-text ${removedBoardName === board.name ? 'bg-light-board dark:bg-dark-board' : 'bg-light-bg-faded dark:bg-dark-bg-faded hover:bg-light-board dark:hover:bg-dark-board hover:opacity-80'}`}>
+              <button key={board.name} onClick={() => setRemovedBoardName(board.name)} title={board.name} className={`flex justify-center items-center w-full py-4 border-2 text-lg border-light-text dark:border-dark-text ${removedBoardName === board.name ? 'bg-light-board dark:bg-dark-board' : 'bg-light-bg-secondary dark:bg-dark-bg-secondary hover:bg-light-board dark:hover:bg-dark-board hover:opacity-80'}`}>
                 <span className={`overflow-hidden text-ellipsis whitespace-nowrap ${removedBoardName === board.name ? 'bg-light-board dark:bg-dark-board' : ''}`}>{board.name}</span>
               </button>
             ))}
@@ -121,7 +121,7 @@ const Home = () => {
 
   // User has at least one board created.
   return (
-    <main className='flex flex-col min-h-screen bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text'>
+    <main className='flex flex-col min-h-screen bg-light-bg-primary text-light-text dark:bg-dark-bg-primary dark:text-dark-text'>
       <h1 className='text-4xl text-center pt-4'>KanBan Boards</h1>
       <TopBar
         boards={boards}
@@ -131,24 +131,24 @@ const Home = () => {
         onDeleteBoard={() => { startRemovingBoard(setIsRemovingBoard) }}
       />
       {selectedBoardName && (
-        <div>
-          <BoardHeader
-            name={selectedBoardName}
-          />
-          <div className="columns">
-            {getColumnsByBoardName(selectedBoardName).map(column => (
+        <section className='flex flex-col md:flex-row justify-start md:justify-between w-full flex-1'>
+          {getColumnsByBoardName(selectedBoardName).map((column, index) => (
+            <section
+              key={column.name}
+              className={`flex-1 bg-light-bg-tertiary dark:bg-dark-bg-tertiary w-full' md:flex-1 border-b-1 md:border-b-0 ${index > 0 ? 'md:border-l' : ''} ${index < getColumnsByBoardName(selectedBoardName).length - 1 ? 'md:border-r' : ''} border-light-text dark:border-dark-text`}
+            >
               <Column
                 key={column.name}
                 column={column.name}
-                tasks={getTasksByColumnName}
+                tasks={getTasksByColumnName(column.name)}
                 onAddTask={handleAddTask}
                 onTaskEdit={setEditingTask}
                 onTaskDelete={handleDeleteTask}
                 onTaskMove={handleTaskMove}
               />
-            ))}
-          </div>
-        </div>
+            </section>
+          ))}
+        </section>
       )}
       {editingTask && (
         <TaskForm
