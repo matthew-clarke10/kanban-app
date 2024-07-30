@@ -1,9 +1,19 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Column = ({ column, selectedColumnName, setSelectedColumnName, onStartAddingTask, onTaskEdit, onTaskDelete, onTaskMove }) => {
   const [hoveredTask, setHoveredTask] = useState(null);
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  const [isMobile, setIsMobile] = useState(window.matchMedia("(max-width: 768px)").matches);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleMouseOver = (task) => {
     setHoveredTask(task);

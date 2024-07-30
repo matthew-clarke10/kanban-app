@@ -169,7 +169,7 @@ const Home = () => {
           {getColumnsByBoardName(selectedBoardName).map((column, index) => (
             <section
               key={column.name}
-              className={`flex flex-col flex-1 w-full' md:flex-1 border-b-2 border-x-2 ${index === 0 ? 'md:border-l-2 border-t-2' : 'md:border-l-0 md:border-t-2'} ${index < getColumnsByBoardName(selectedBoardName).length - 1 ? 'md:border-r-2' : ''} border-light-text dark:border-dark-text`}
+              className={`flex flex-col transition-all duration-300 ${selectedColumnName === column.name ? 'flex-1' : 'flex-0'} w-full' md:flex-1 border-b-2 border-x-2 ${index === 0 ? 'md:border-l-2 border-t-2' : 'md:border-l-0 md:border-t-2'} ${index < getColumnsByBoardName(selectedBoardName).length - 1 ? 'md:border-r-2' : ''} border-light-text dark:border-dark-text`}
             >
               <Column
                 key={column.name}
