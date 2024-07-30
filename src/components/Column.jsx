@@ -73,7 +73,7 @@ const Column = ({ column, selectedColumnName, setSelectedColumnName, onStartAddi
     return (
       <section className='bg-light-bg-tertiary dark:bg-dark-bg-tertiary text-center'>
         <h2
-          className={`py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 dark:bg-cyan-700' : column.name === 'Current' ? 'bg-orange-400 dark:bg-blue-700' : 'bg-yellow-400 dark:bg-purple-800'}`}
+          className={`py-2 sm:py-4 text-xl sm:text-3xl hover:cursor-pointer ${column.name === 'Upcoming' ? 'bg-red-400 hover:bg-red-500 md:hover:bg-red-400 dark:bg-cyan-700 dark:hover:bg-cyan-800 dark:md:hover:bg-cyan-700' : column.name === 'Current' ? 'bg-orange-400 hover:bg-orange-500 md:hover:bg-orange-400 dark:bg-blue-700 dark:hover:bg-blue-800 dark:md:hover:bg-blue-700' : 'bg-yellow-400 hover:bg-yellow-500 md:hover:bg-yellow-400 dark:bg-purple-800 dark:hover:bg-purple-900 dark:md:hover:bg-purple-800'}`}
           onClick={() => isMobile && setSelectedColumnName(column.name)}
         >
           {column.name}
