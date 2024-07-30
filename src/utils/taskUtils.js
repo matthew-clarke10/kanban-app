@@ -23,7 +23,21 @@ export const cancelAddingTask = (setAddingTask) => {
   setAddingTask(null);
 };
 
-export const addNewTask = (selectedBoardName, addingTask, newTaskName, setNewTaskName, setAddingTask) => {
+export const isValidTaskDetails = (taskDate, taskTime, setValidTaskDateTime) => {
+  const timePattern = /^([01]\d|2[0-3]):?([0-5]\d)$/;
+
+  if (!taskDate || !taskTime || isNaN(Date.parse(taskDate)) || !taskTime.match(timePattern)) {
+    setValidTaskDateTime(false);
+    return false;
+  } else {
+    setValidTaskDateTime(true);
+    return true;
+  }
+};
+
+export const addNewTask = (selectedBoardName, taskDate, taskTime, addingTask, newTaskName, setNewTaskName, setAddingTask) => {
+  // date-format: YYYY-MM-DD
+  // time-format: HH:MM (24-hour)
   const boards = JSON.parse(localStorage.getItem('boards')) || [];
   const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
   if (boardIndex === -1) {
@@ -39,7 +53,8 @@ export const addNewTask = (selectedBoardName, addingTask, newTaskName, setNewTas
 
   boards[boardIndex].columns[columnIndex].tasks.push({
     name: newTaskName,
-    time: 'Today',
+    date: taskDate,
+    time: taskTime,
   });
 
   localStorage.setItem('boards', JSON.stringify(boards));

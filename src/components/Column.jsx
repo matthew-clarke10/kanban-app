@@ -42,7 +42,7 @@ const Column = ({ column, selectedColumnName, setSelectedColumnName, onStartAddi
                 <div className='flex flex-1 items-center pl-2 h-full'>{task.name}</div>
                 <div className='flex justify-center items-center w-16 h-full'>
                   {hoveredTask !== task && (
-                    <div className='flex justify-center items-center w-full h-full'>{task.time}</div>
+                    <div className='flex justify-center items-center w-full h-full'>{task.date} ({task.time})</div>
                   )}
                   {hoveredTask === task && (
                     <div className='flex flex-col'>
@@ -88,6 +88,7 @@ Column.propTypes = {
     name: PropTypes.string.isRequired,
     tasks: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
       time: PropTypes.string.isRequired,
     })).isRequired,
   }).isRequired,

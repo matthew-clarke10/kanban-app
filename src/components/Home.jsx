@@ -7,7 +7,7 @@ import TaskForm from './TaskForm';
 import { updateTheme } from '../utils/themeUtils';
 import { getBoardByName, loadBoards, startAddingBoard, startRemovingBoard, cancelAddingBoard, cancelRemovingBoard, isValidBoardName, saveNewBoard, removeBoard } from '../utils/boardUtils';
 import { getColumnsByBoardName } from '../utils/columnUtils';
-import { getTasksByColumn, startAddingTask, cancelAddingTask, addNewTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
+import { getTasksByColumn, startAddingTask, cancelAddingTask, isValidTaskDetails, addNewTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
 
 const Home = () => {
   const [boards, setBoards] = useState([]);
@@ -21,6 +21,9 @@ const Home = () => {
   const [selectedColumnName, setSelectedColumnName] = useState('Upcoming');
   const [addingTask, setAddingTask] = useState(null);
   const [newTaskName, setNewTaskName] = useState('');
+  const [taskDate, setTaskDate] = useState('');
+  const [taskTime, setTaskTime] = useState('');
+  const [validTaskDateTime, setValidTaskDateTime] = useState(true);
   const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
@@ -37,6 +40,9 @@ const Home = () => {
     setRemovedBoardName('');
     setSelectedRemovedBoardName(false);
     setNewTaskName('');
+    setTaskDate('');
+    setTaskTime('');
+    setValidTaskDateTime(true);
   }, [boards, selectedBoardName, isAddingBoard, isRemovingBoard, addingTask]);
 
   // No boards created yet.
@@ -132,7 +138,12 @@ const Home = () => {
           <h2>New Task</h2>
           <form onSubmit={(e) => {
             e.preventDefault();
-            addNewTask(selectedBoardName, addingTask, newTaskName, setNewTaskName, setAddingTask);
+            if (isValidTaskDetails(taskDate, taskTime, setValidTaskDateTime)) {
+              setValidTaskDateTime(true);
+              addNewTask(selectedBoardName, taskDate, taskTime, addingTask, newTaskName, setNewTaskName, setAddingTask);
+            } else {
+              setValidTaskDateTime(false);
+            }
           }}
             className='flex flex-col gap-y-4'>
             <input
@@ -143,6 +154,23 @@ const Home = () => {
               required
               className='rounded-full px-4 py-2 bg-light-bg-secondary text-light-text dark:bg-dark-bg-secondary dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text'
             />
+            <input
+              type="date"
+              value={taskDate}
+              onChange={(e) => setTaskDate(e.target.value)}
+              required
+              className='rounded-full px-4 py-2 bg-light-bg-secondary text-light-text dark:bg-dark-bg-secondary dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text'
+            />
+            <input
+              type="time"
+              value={taskTime}
+              onChange={(e) => setTaskTime(e.target.value)}
+              required
+              className='rounded-full px-4 py-2 bg-light-bg-secondary text-light-text dark:bg-dark-bg-secondary dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text'
+            />
+            {!validTaskDateTime && (
+              <div className='text-center'>Date or time is invalid.</div>
+            )}
             <div className='flex justify-evenly gap-4 text-lg'>
               <button type='submit' className='w-28 px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Add</button>
               <button type='button' onClick={() => { cancelAddingTask(setAddingTask) }} className='w-28 px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Cancel</button>
