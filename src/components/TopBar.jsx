@@ -25,7 +25,13 @@ const TopBar = ({ boards, selectedBoardName, onBoardSelect, onAddBoard, onDelete
 TopBar.propTypes = {
   boards: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
-    columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+    columns: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      tasks: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        time: PropTypes.string.isRequired,
+      })).isRequired,
+    })).isRequired,
   })).isRequired,
   selectedBoardName: PropTypes.string.isRequired,
   onBoardSelect: PropTypes.func.isRequired,

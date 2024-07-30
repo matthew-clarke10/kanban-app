@@ -7,7 +7,7 @@ import TaskForm from './TaskForm';
 import { updateTheme } from '../utils/themeUtils';
 import { getBoardByName, loadBoards, startAddingBoard, startRemovingBoard, cancelAddingBoard, cancelRemovingBoard, isValidBoardName, saveNewBoard, removeBoard } from '../utils/boardUtils';
 import { getColumnsByBoardName } from '../utils/columnUtils';
-import { getTasksByColumnName, handleAddTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
+import { getTasksByColumn, startAddingTask, cancelAddingTask, addNewTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
 
 const Home = () => {
   const [boards, setBoards] = useState([]);
@@ -18,6 +18,9 @@ const Home = () => {
   const [removedBoardName, setRemovedBoardName] = useState('');
   const [selectedRemovedBoardName, setSelectedRemovedBoardName] = useState(false);
   const [selectedBoardName, setSelectedBoardName] = useState(null);
+  const [selectedColumnName, setSelectedColumnName] = useState('Upcoming');
+  const [addingTask, setAddingTask] = useState(null);
+  const [newTaskName, setNewTaskName] = useState('');
   const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
@@ -33,7 +36,8 @@ const Home = () => {
     setValidBoardName(true);
     setRemovedBoardName('');
     setSelectedRemovedBoardName(false);
-  }, [boards, selectedBoardName, isAddingBoard, isRemovingBoard]);
+    setNewTaskName('');
+  }, [boards, selectedBoardName, isAddingBoard, isRemovingBoard, addingTask]);
 
   // No boards created yet.
   if (boards.length === 0 && !isAddingBoard) {
@@ -119,6 +123,36 @@ const Home = () => {
     );
   }
 
+  // User is creating a task now.
+  if (addingTask) {
+    return (
+      <main className='flex flex-col items-center min-h-screen p-2 text-2xl bg-light-bg-primary text-light-text dark:bg-dark-bg-primary dark:text-dark-text'>
+        <h1 className='text-4xl text-center'>KanBan Boards</h1>
+        <section className='flex flex-1 flex-col justify-center items-center h-full gap-y-2'>
+          <h2>New Task</h2>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            addNewTask(selectedBoardName, addingTask, newTaskName, setNewTaskName, setAddingTask);
+          }}
+            className='flex flex-col gap-y-4'>
+            <input
+              type="text"
+              placeholder="Enter name"
+              value={newTaskName}
+              onChange={(e) => setNewTaskName(e.target.value)}
+              required
+              className='rounded-full px-4 py-2 bg-light-bg-secondary text-light-text dark:bg-dark-bg-secondary dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text'
+            />
+            <div className='flex justify-evenly gap-4 text-lg'>
+              <button type='submit' className='w-28 px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Add</button>
+              <button type='button' onClick={() => { cancelAddingTask(setAddingTask) }} className='w-28 px-3 py-2 rounded-lg border-2 border-light-text dark:border-dark-text'>Cancel</button>
+            </div>
+          </form>
+        </section>
+      </main>
+    );
+  }
+
   // User has at least one board created.
   return (
     <main className='flex flex-col min-h-screen bg-light-bg-primary text-light-text dark:bg-dark-bg-primary dark:text-dark-text'>
@@ -131,17 +165,18 @@ const Home = () => {
         onDeleteBoard={() => { startRemovingBoard(setIsRemovingBoard) }}
       />
       {selectedBoardName && (
-        <section className='flex flex-col md:flex-row justify-start md:justify-between w-full flex-1'>
+        <section className='flex flex-col md:flex-row justify-start md:justify-between w-full flex-1 px-4 pb-4'>
           {getColumnsByBoardName(selectedBoardName).map((column, index) => (
             <section
               key={column.name}
-              className={`flex flex-col flex-1 bg-light-bg-tertiary dark:bg-dark-bg-tertiary w-full' md:flex-1 border-b-1 md:border-b-0 ${index > 0 ? 'md:border-l' : ''} ${index < getColumnsByBoardName(selectedBoardName).length - 1 ? 'md:border-r' : ''} border-light-text dark:border-dark-text`}
+              className={`flex flex-col flex-1 w-full' md:flex-1 border-b-2 border-x-2 ${index === 0 ? 'md:border-l-2 border-t-2' : 'md:border-l-0 md:border-t-2'} ${index < getColumnsByBoardName(selectedBoardName).length - 1 ? 'md:border-r-2' : ''} border-light-text dark:border-dark-text`}
             >
               <Column
                 key={column.name}
-                column={column.name}
-                tasks={getTasksByColumnName(column.name)}
-                onAddTask={handleAddTask}
+                column={column}
+                selectedColumnName={selectedColumnName}
+                setSelectedColumnName={setSelectedColumnName}
+                onStartAddingTask={() => { startAddingTask(setAddingTask, column.name) }}
                 onTaskEdit={setEditingTask}
                 onTaskDelete={handleDeleteTask}
                 onTaskMove={handleTaskMove}

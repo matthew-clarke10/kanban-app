@@ -39,7 +39,20 @@ export const isValidBoardName = (newBoardName) => {
 export const saveNewBoard = (newBoardName, setNewBoardName, setIsAddingBoard, setBoards, setSelectedBoardName) => {
   const newBoard = {
     name: newBoardName,
-    columns: ['Upcoming', 'Current', 'Finished']
+    columns: [
+      {
+        name: 'Upcoming',
+        tasks: [],
+      },
+      {
+        name: 'Current',
+        tasks: [],
+      },
+      {
+        name: 'Finished',
+        tasks: [],
+      },
+    ]
   };
 
   const existingBoards = JSON.parse(localStorage.getItem('boards')) || [];

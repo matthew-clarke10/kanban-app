@@ -1,14 +1,5 @@
 export const getColumnsByBoardName = (selectedBoardName) => {
-  // TO-DO
-  return [
-    {
-      name: 'Upcoming',
-    },
-    {
-      name: 'Current',
-    },
-    {
-      name: 'Finished',
-    },
-  ];
+  const boards = JSON.parse(localStorage.getItem('boards')) || [];
+  const board = boards.find(board => board.name === selectedBoardName);
+  return board ? board.columns : [];
 };
