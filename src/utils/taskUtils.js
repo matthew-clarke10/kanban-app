@@ -36,8 +36,6 @@ export const isValidTaskDetails = (taskDate, taskTime, setValidTaskDateTime) => 
 };
 
 export const addNewTask = (selectedBoardName, taskDate, taskTime, addingTask, newTaskName, setNewTaskName, setAddingTask) => {
-  // date-format: YYYY-MM-DD
-  // time-format: HH:MM (24-hour)
   const boards = JSON.parse(localStorage.getItem('boards')) || [];
   const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
   if (boardIndex === -1) {
@@ -51,7 +49,21 @@ export const addNewTask = (selectedBoardName, taskDate, taskTime, addingTask, ne
     return;
   }
 
+  let maxTaskId = 0;
+  boards[boardIndex].columns.forEach(column => {
+    column.tasks.forEach(task => {
+      if (task.id > maxTaskId) {
+        maxTaskId = task.id;
+      }
+    });
+  });
+
+  const newTaskId = maxTaskId + 1;
+
+  console.log(maxTaskId);
+
   boards[boardIndex].columns[columnIndex].tasks.push({
+    id: newTaskId,
     name: newTaskName,
     date: taskDate,
     time: taskTime,

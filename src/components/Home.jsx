@@ -8,6 +8,7 @@ import { updateTheme } from '../utils/themeUtils';
 import { getBoardByName, loadBoards, startAddingBoard, startRemovingBoard, cancelAddingBoard, cancelRemovingBoard, isValidBoardName, saveNewBoard, removeBoard } from '../utils/boardUtils';
 import { getColumnsByBoardName } from '../utils/columnUtils';
 import { getTasksByColumn, startAddingTask, cancelAddingTask, isValidTaskDetails, addNewTask, handleSaveTask, handleDeleteTask, handleTaskMove } from '../utils/taskUtils';
+import { getTodaysDate, getDateOneYearFromNow } from '../utils/dateTimeUtils';
 
 const Home = () => {
   const [boards, setBoards] = useState([]);
@@ -159,6 +160,8 @@ const Home = () => {
               value={taskDate}
               onChange={(e) => setTaskDate(e.target.value)}
               required
+              min={getTodaysDate()}
+              max={getDateOneYearFromNow()}
               className='rounded-full px-4 py-2 bg-light-bg-secondary text-light-text dark:bg-dark-bg-secondary dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text'
             />
             <input
