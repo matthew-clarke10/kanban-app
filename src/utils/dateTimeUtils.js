@@ -5,10 +5,16 @@ export const convertTimeTo12Hour = (time) => {
     return `${hour12}:${minute}${period}`;
 };
 
+// Make the date equal to midnight time so that it stays consistent.
+const normalizeDate = (date) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+};
+
 export const formatDate = (taskDate) => {
-    const today = new Date();
-    const date = new Date(taskDate);
+    const today = normalizeDate(new Date());
+    const date = normalizeDate(new Date(taskDate));
     const differenceInDays = Math.floor((date - today) / (1000 * 60 * 60 * 24));
+    console.log(differenceInDays);
     const currentYear = today.getFullYear();
     const taskYear = date.getFullYear();
     const options = {

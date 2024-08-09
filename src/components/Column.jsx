@@ -24,6 +24,16 @@ const Column = ({ column, selectedColumnName, setSelectedColumnName, onStartAddi
     setHoveredTask(null);
   };
 
+  const sortTasksByDateTime = (tasks) => {
+    return tasks.slice().sort((a, b) => {
+      const dateA = new Date(a.date + ' ' + a.time).getTime();
+      const dateB = new Date(b.date + ' ' + b.time).getTime();
+      return dateA - dateB;
+    });
+  };
+
+  const sortedTasks = sortTasksByDateTime(column.tasks);
+
   if (!isMobile || selectedColumnName === column.name) {
     return (
       <>
@@ -37,8 +47,8 @@ const Column = ({ column, selectedColumnName, setSelectedColumnName, onStartAddi
           <button onClick={() => onStartAddingTask()} className='bg-green-400 hover:bg-green-500 dark:bg-green-700 dark:hover:bg-green-800 w-full py-1 sm:py-2 text-base sm:text-xl border-y-2 border-light-text dark:border-dark-text'>Create</button>
         </section>
         <section className='flex flex-col flex-1'>
-          {column.tasks.length > 0 ? (
-            column.tasks.map((task) => (
+          {sortedTasks.length > 0 ? (
+            sortedTasks.map((task) => (
               <div key={task.id} className={`flex flex-col justify-center h-24 bg-light-bg-faded dark:bg-dark-bg-faded border-b-2 border-light-text dark:border-dark-text bg-light-bg-secondary dark:bg-dark-bg-secondary`} onMouseOver={() => handleMouseOver(task)} onMouseOut={handleMouseOut}>
                 <div className={`flex justify-between items-center ${hoveredTask === task ? 'h-16' : 'h-auto gap-4'}`}>
                   <div className={`flex flex-1 items-center pl-2 ${hoveredTask === task ? 'text-lg' : 'text-xl md:text-lg lg:text-xl xl:text-2xl'} h-full`}>{task.name}</div>
