@@ -39,32 +39,38 @@ const Column = ({ column, selectedColumnName, setSelectedColumnName, onStartAddi
         <section className='flex flex-col flex-1'>
           {column.tasks.length > 0 ? (
             column.tasks.map((task) => (
-              <div key={task.id} className='flex justify-between items-center h-16 bg-light-bg-faded dark:bg-dark-bg-faded border-b-2 border-light-text dark:border-dark-text hover:cursor-grab bg-light-bg-secondary dark:bg-dark-bg-secondary hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary' onMouseOver={() => handleMouseOver(task)} onMouseOut={handleMouseOut}>
-                <div className='flex flex-1 items-center pl-2 h-full'>{task.name}</div>
-                <div className='flex justify-center items-center w-28 h-full'>
-                  {hoveredTask !== task && (
-                    <div className='flex flex-col justify-center items-center text-center w-full h-full'>
-                      <div className='w-full h-full'>{formatDate(task.date)}</div>
-                      <div className='w-full h-full'>{convertTimeTo12Hour(task.time)}</div>
+              <div key={task.id} className={`flex flex-col justify-center h-24 bg-light-bg-faded dark:bg-dark-bg-faded border-b-2 border-light-text dark:border-dark-text bg-light-bg-secondary dark:bg-dark-bg-secondary`} onMouseOver={() => handleMouseOver(task)} onMouseOut={handleMouseOut}>
+                <div className={`flex justify-between items-center ${hoveredTask === task ? 'h-16' : 'h-auto gap-4'}`}>
+                  <div className={`flex flex-1 items-center pl-2 ${hoveredTask === task ? 'text-lg' : 'text-xl md:text-lg lg:text-xl xl:text-2xl'} h-full`}>{task.name}</div>
+                  <div className='flex justify-center items-center w-28 h-full'>
+                    <div className={`flex flex-col justify-center items-center text-center font-bold ${hoveredTask === task ? 'text-lg' : 'text-xl md:text-lg lg:text-xl xl:text-2xl'} w-full h-full`}>
+                      <div className='flex justify-center items-center w-full h-full'>{formatDate(task.date)}</div>
+                      <div className='flex justify-center items-center w-full h-full'>{convertTimeTo12Hour(task.time)}</div>
                     </div>
-                  )}
-                  {hoveredTask === task && (
-                    <div className='flex flex-col w-full'>
-                      <button
-                        className='bg-blue-400 hover:bg-blue-500 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white py-1 px-2 w-full h-1/2'
-                        onClick={() => onTaskEdit(task)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className='bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800 text-black dark:text-white py-1 px-2 w-full h-1/2'
-                        onClick={() => onTaskDelete(task)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}
+                  </div>
                 </div>
+                {hoveredTask === task && (
+                  <div className='flex w-full h-8 text-xl border-t-2 border-light-text dark:border-dark-text'>
+                    <button
+                      className='flex justify-center items-center bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-700 dark:hover:bg-yellow-800 text-black dark:text-white py-1 px-2 w-full h-full border-r-2 border-light-text dark:border-dark-text'
+                      onClick={() => onTaskMove(task)}
+                    >
+                      Move
+                    </button>
+                    <button
+                      className='flex justify-center items-center bg-blue-400 hover:bg-blue-500 dark:bg-blue-700 dark:hover:bg-blue-800 text-black dark:text-white py-1 px-2 w-full h-full'
+                      onClick={() => onTaskEdit(task)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className='flex justify-center items-center bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800 text-black dark:text-white py-1 px-2 w-full h-full border-l-2 border-light-text dark:border-dark-text'
+                      onClick={() => onTaskDelete(task)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             ))
           ) : (
@@ -77,7 +83,7 @@ const Column = ({ column, selectedColumnName, setSelectedColumnName, onStartAddi
     return (
       <section className='bg-light-bg-tertiary dark:bg-dark-bg-tertiary text-center'>
         <h2
-          className={`py-2 sm:py-4 text-xl sm:text-3xl hover:cursor-pointer ${column.name === 'Upcoming' ? 'bg-red-400 hover:bg-red-500 md:hover:bg-red-400 dark:bg-cyan-700 dark:hover:bg-cyan-800 dark:md:hover:bg-cyan-700' : column.name === 'Current' ? 'bg-orange-400 hover:bg-orange-500 md:hover:bg-orange-400 dark:bg-blue-700 dark:hover:bg-blue-800 dark:md:hover:bg-blue-700' : 'bg-yellow-400 hover:bg-yellow-500 md:hover:bg-yellow-400 dark:bg-purple-800 dark:hover:bg-purple-900 dark:md:hover:bg-purple-800'}`}
+          className={`py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 hover:bg-red-500 md:hover:bg-red-400 dark:bg-cyan-700 dark:hover:bg-cyan-800 dark:md:hover:bg-cyan-700' : column.name === 'Current' ? 'bg-orange-400 hover:bg-orange-500 md:hover:bg-orange-400 dark:bg-blue-700 dark:hover:bg-blue-800 dark:md:hover:bg-blue-700' : 'bg-yellow-400 hover:bg-yellow-500 md:hover:bg-yellow-400 dark:bg-purple-800 dark:hover:bg-purple-900 dark:md:hover:bg-purple-800'}`}
           onClick={() => isMobile && setSelectedColumnName(column.name)}
         >
           {column.name}
