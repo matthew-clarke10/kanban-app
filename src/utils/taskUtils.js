@@ -1,28 +1,3 @@
-export const getTasksByColumn = (column) => {
-  return [
-    {
-      name: 'Task 1',
-      time: 'Today',
-    },
-    {
-      name: 'Task 2',
-      time: 'Today',
-    },
-    {
-      name: 'Task 3',
-      time: 'Today',
-    },
-  ];
-};
-
-export const startAddingTask = (setAddingTask, columnName) => {
-  setAddingTask(columnName);
-};
-
-export const cancelAddingTask = (setAddingTask) => {
-  setAddingTask(null);
-};
-
 export const isValidTaskDetails = (taskDate, taskTime, setValidTaskDateTime) => {
   const timePattern = /^([01]\d|2[0-3]):?([0-5]\d)$/;
 
@@ -35,7 +10,13 @@ export const isValidTaskDetails = (taskDate, taskTime, setValidTaskDateTime) => 
   }
 };
 
-export const addNewTask = (selectedBoardName, taskDate, taskTime, addingTask, newTaskName, setNewTaskName, setAddingTask) => {
+export const addTaskStart = (columnName, setIsModalOpen, setModalType, setAddingTask) => {
+  setIsModalOpen(true);
+  setModalType('Add Task');
+  setAddingTask(columnName);
+};
+
+export const addTaskFinish = (selectedBoardName, taskDate, taskTime, addingTask, newTaskName, setNewTaskName, setAddingTask, setIsModalOpen) => {
   const boards = JSON.parse(localStorage.getItem('boards')) || [];
   const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
   if (boardIndex === -1) {
@@ -60,8 +41,6 @@ export const addNewTask = (selectedBoardName, taskDate, taskTime, addingTask, ne
 
   const newTaskId = maxTaskId + 1;
 
-  console.log(maxTaskId);
-
   boards[boardIndex].columns[columnIndex].tasks.push({
     id: newTaskId,
     name: newTaskName,
@@ -72,16 +51,44 @@ export const addNewTask = (selectedBoardName, taskDate, taskTime, addingTask, ne
   localStorage.setItem('boards', JSON.stringify(boards));
   setNewTaskName('');
   setAddingTask(null);
+  setIsModalOpen(false)
 };
 
-export const handleSaveTask = () => {
+export const addTaskCancel = (setAddingTask, setIsModalOpen) => {
+  setAddingTask(null);
+  setIsModalOpen(false);
+};
+
+export const editTaskStart = (task, setIsModalOpen, setModalType, setEditingTask) => {
+  setIsModalOpen(true);
+  setModalType('Edit Task');
+  setEditingTask(task);
+};
+
+export const editTaskFinish = () => {
   // TO-DO
 };
 
-export const handleDeleteTask = () => {
+export const editTaskCancel = () => {
   // TO-DO
 };
 
-export const handleTaskMove = () => {
+export const deleteTaskStart = () => {
+  // TO-DO
+};
+
+export const deleteTaskFinish = () => {
+  // TO-DO
+};
+
+export const deleteTaskCancel = () => {
+  // TO-DO
+};
+
+export const moveTaskStart = () => {
+  // TO-DO
+};
+
+export const moveTaskFinish = () => {
   // TO-DO
 };

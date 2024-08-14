@@ -1,31 +1,3 @@
-export const getBoardByName = () => {
-  // TO-DO
-};
-
-export const loadBoards = (setSelectedBoardName) => {
-  const boards = JSON.parse(localStorage.getItem('boards')) || [];
-  if (boards.length !== 0) {
-    setSelectedBoardName(boards[0].name);
-  }
-  return boards;
-};
-
-export const startAddingBoard = (setIsAddingBoard) => {
-  setIsAddingBoard(true);
-};
-
-export const cancelAddingBoard = (setIsAddingBoard) => {
-  setIsAddingBoard(false);
-};
-
-export const startRemovingBoard = (setIsRemovingBoard) => {
-  setIsRemovingBoard(true);
-};
-
-export const cancelRemovingBoard = (setIsRemovingBoard) => {
-  setIsRemovingBoard(false);
-};
-
 export const isValidBoardName = (newBoardName) => {
   const existingBoards = JSON.parse(localStorage.getItem('boards')) || [];
   const nameExists = existingBoards.some(board => board.name === newBoardName);
@@ -36,7 +8,21 @@ export const isValidBoardName = (newBoardName) => {
   }
 };
 
-export const saveNewBoard = (newBoardName, setNewBoardName, setIsAddingBoard, setBoards, setSelectedBoardName) => {
+export const loadBoards = (setSelectedBoardName) => {
+  const boards = JSON.parse(localStorage.getItem('boards')) || [];
+  if (boards.length !== 0) {
+    setSelectedBoardName(boards[0].name);
+  }
+  return boards;
+};
+
+export const addBoardStart = (setIsModalOpen, setModalType, setIsAddingBoard) => {
+  setIsModalOpen(true);
+  setModalType('Create Board');
+  setIsAddingBoard(true);
+};
+
+export const addBoardFinish = (newBoardName, setNewBoardName, setIsAddingBoard, setBoards, setSelectedBoardName, setIsModalOpen) => {
   const newBoard = {
     name: newBoardName,
     columns: [
@@ -62,9 +48,26 @@ export const saveNewBoard = (newBoardName, setNewBoardName, setIsAddingBoard, se
   setSelectedBoardName(newBoardName);
   setIsAddingBoard(false);
   setNewBoardName('');
+  setIsModalOpen(false);
 };
 
-export const removeBoard = (removedBoardName, selectedBoardName, setRemovedBoardName, setIsRemovingBoard, setBoards, setSelectedBoardName) => {
+export const addBoardCancel = (setIsAddingBoard, setIsModalOpen) => {
+  setIsAddingBoard(false);
+  setIsModalOpen(false);
+};
+
+export const removeBoardStart = (setIsModalOpen, setModalType, setIsRemovingBoard) => {
+  setIsRemovingBoard(true);
+  setModalType('Delete Board');
+  setIsModalOpen(true);
+};
+
+export const removeBoardCancel = (setIsRemovingBoard, setIsModalOpen) => {
+  setIsRemovingBoard(false);
+  setIsModalOpen(false);
+};
+
+export const removeBoardFinish = (removedBoardName, selectedBoardName, setRemovedBoardName, setIsRemovingBoard, setBoards, setSelectedBoardName, setIsModalOpen) => {
   const existingBoards = JSON.parse(localStorage.getItem('boards')) || [];
   const updatedBoards = existingBoards.filter(board => board.name !== removedBoardName);
   localStorage.setItem('boards', JSON.stringify(updatedBoards));
@@ -80,4 +83,5 @@ export const removeBoard = (removedBoardName, selectedBoardName, setRemovedBoard
 
   setIsRemovingBoard(false);
   setRemovedBoardName('');
+  setIsModalOpen(false);
 };
