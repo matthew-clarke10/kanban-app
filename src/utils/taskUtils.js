@@ -15,7 +15,7 @@ export const addTaskStart = (columnName, setIsCreateTaskOpen, setAddingTask) => 
   setAddingTask(columnName);
 };
 
-export const addTaskFinish = (selectedBoardName, taskDate, taskTime, addingTask, newTaskName, setNewTaskName, setAddingTask, setIsModalOpen) => {
+export const addTaskFinish = (selectedBoardName, taskDate, taskTime, addingTask, newTaskName, setNewTaskName, setAddingTask, onClose) => {
   const boards = JSON.parse(localStorage.getItem('boards')) || [];
   const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
   if (boardIndex === -1) {
@@ -50,7 +50,7 @@ export const addTaskFinish = (selectedBoardName, taskDate, taskTime, addingTask,
   localStorage.setItem('boards', JSON.stringify(boards));
   setNewTaskName('');
   setAddingTask(null);
-  setIsModalOpen(false)
+  onClose();
 };
 
 export const addTaskCancel = (setAddingTask, setIsModalOpen) => {
@@ -58,13 +58,36 @@ export const addTaskCancel = (setAddingTask, setIsModalOpen) => {
   setIsModalOpen(false);
 };
 
-export const editTaskStart = (task, setIsEditTaskOpen, setEditingTask) => {
+export const editTaskStart = (columnName, task, setIsEditTaskOpen, setEditingColumn, setEditingTask) => {
   setIsEditTaskOpen(true);
+  setEditingColumn(columnName);
   setEditingTask(task);
 };
 
-export const editTaskFinish = () => {
-  // TO-DO
+export const editTaskFinish = (selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose) => {
+  const boards = JSON.parse(localStorage.getItem('boards')) || [];
+  const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
+  if (boardIndex === -1) {
+    console.error('Board not found');
+    return;
+  }
+
+  const columnIndex = boards[boardIndex].columns.findIndex(column => column.name === editingColumn);
+  if (columnIndex === -1) {
+    console.error('Column not found');
+    return;
+  }
+
+  boards[boardIndex].columns[columnIndex].tasks.forEach((task, index) => {
+    if (task.id === editingTask.id) {
+      boards[boardIndex].columns[columnIndex].tasks[index] = editingTask;
+    }
+  });
+
+  localStorage.setItem('boards', JSON.stringify(boards));
+  setEditingTask(null);
+  setEditingColumn(null);
+  onClose();
 };
 
 export const editTaskCancel = () => {

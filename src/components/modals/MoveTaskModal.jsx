@@ -6,8 +6,8 @@ const MoveTaskModal = ({ addingTask, newTaskName, taskDate, taskTime, validTaskD
     <section className='fixed inset-0 flex flex-1 items-center justify-center z-50 bg-black bg-opacity-50 h-0 gap-y-2'>
       <BaseModal
         onClose={onClose}
-        title="New Task"
-        confirmButtonText="Add"
+        title="Move Task"
+        confirmButtonText="Move"
         onConfirm={() => {
           if (isValidTaskDetails(newTaskName, taskDate, taskTime, setValidTaskDateTime)) {
             setValidTaskDateTime(true);
