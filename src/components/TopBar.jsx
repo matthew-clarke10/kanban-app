@@ -33,7 +33,7 @@ TopBar.propTypes = {
       })).isRequired,
     })).isRequired,
   })).isRequired,
-  selectedBoardName: PropTypes.string.isRequired,
+  selectedBoardName: PropTypes.string,
   onBoardSelect: PropTypes.func.isRequired,
   onAddBoard: PropTypes.func.isRequired,
   onDeleteBoard: PropTypes.func.isRequired,

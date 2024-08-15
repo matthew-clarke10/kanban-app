@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { convertTimeTo12Hour, formatDate } from '../utils/dateTimeUtils';
 
-const Column = ({ column, selectedColumnName, setSelectedColumnName, onTaskAdd, onTaskEdit, onTaskDelete, onTaskMove }) => {
+const Column = ({ column, selectedColumnName, setSelectedColumnName, onAddTask, onTaskEdit, onTaskDelete, onTaskMove }) => {
   const [hoveredTask, setHoveredTask] = useState(null);
   const [isMobile, setIsMobile] = useState(window.matchMedia("(max-width: 768px)").matches);
 
@@ -44,7 +44,7 @@ const Column = ({ column, selectedColumnName, setSelectedColumnName, onTaskAdd, 
           >
             {column.name}
           </h2>
-          <button onClick={() => onTaskAdd()} className='bg-green-400 hover:bg-green-500 dark:bg-green-700 dark:hover:bg-green-800 w-full py-1 sm:py-2 text-base sm:text-xl border-y-2 border-light-text dark:border-dark-text'>Create</button>
+          <button onClick={() => onAddTask()} className='bg-green-400 hover:bg-green-500 dark:bg-green-700 dark:hover:bg-green-800 w-full py-1 sm:py-2 text-base sm:text-xl border-y-2 border-light-text dark:border-dark-text'>Create</button>
         </section>
         <section className='flex flex-col flex-1'>
           {sortedTasks.length > 0 ? (
@@ -114,7 +114,7 @@ Column.propTypes = {
   }).isRequired,
   selectedColumnName: PropTypes.string.isRequired,
   setSelectedColumnName: PropTypes.func.isRequired,
-  onTaskAdd: PropTypes.func.isRequired,
+  onAddTask: PropTypes.func.isRequired,
   onTaskEdit: PropTypes.func.isRequired,
   onTaskDelete: PropTypes.func.isRequired,
   onTaskMove: PropTypes.func.isRequired,

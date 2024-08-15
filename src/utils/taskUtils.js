@@ -1,7 +1,7 @@
-export const isValidTaskDetails = (taskDate, taskTime, setValidTaskDateTime) => {
+export const isValidTaskDetails = (taskName, taskDate, taskTime, setValidTaskDateTime) => {
   const timePattern = /^([01]\d|2[0-3]):?([0-5]\d)$/;
 
-  if (!taskDate || !taskTime || isNaN(Date.parse(taskDate)) || !taskTime.match(timePattern)) {
+  if (taskName === '' || !taskDate || !taskTime || isNaN(Date.parse(taskDate)) || !taskTime.match(timePattern)) {
     setValidTaskDateTime(false);
     return false;
   } else {
@@ -10,9 +10,8 @@ export const isValidTaskDetails = (taskDate, taskTime, setValidTaskDateTime) => 
   }
 };
 
-export const addTaskStart = (columnName, setIsModalOpen, setModalType, setAddingTask) => {
-  setIsModalOpen(true);
-  setModalType('Add Task');
+export const addTaskStart = (columnName, setIsCreateTaskOpen, setAddingTask) => {
+  setIsCreateTaskOpen(true);
   setAddingTask(columnName);
 };
 
@@ -59,9 +58,8 @@ export const addTaskCancel = (setAddingTask, setIsModalOpen) => {
   setIsModalOpen(false);
 };
 
-export const editTaskStart = (task, setIsModalOpen, setModalType, setEditingTask) => {
-  setIsModalOpen(true);
-  setModalType('Edit Task');
+export const editTaskStart = (task, setIsEditTaskOpen, setEditingTask) => {
+  setIsEditTaskOpen(true);
   setEditingTask(task);
 };
 
