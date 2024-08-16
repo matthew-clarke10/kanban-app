@@ -45,7 +45,7 @@ const Column = ({ board, column, selectedColumnName, setIsMovingTask, setSelecte
 
   if (!isMobile || selectedColumnName === column.name) {
     return (
-      <section className='flex flex-col flex-1 h-full bg-light-bg-tertiary dark:bg-dark-bg-tertiary' onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onDragEnter={handleDragEnter}>
+      <section className='flex flex-col flex-1 h-full bg-light-bg-primary dark:bg-dark-bg-primary' onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onDragEnter={handleDragEnter}>
         <section className='h-1/5'>
           <h2
             className={`flex justify-center items-center h-3/5 text-center py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 dark:bg-cyan-700' : column.name === 'Current' ? 'bg-orange-400 dark:bg-blue-700' : 'bg-yellow-400 dark:bg-purple-800'}`}
@@ -60,7 +60,7 @@ const Column = ({ board, column, selectedColumnName, setIsMovingTask, setSelecte
             sortedTasks.map((task) => (
               <button
                 key={task.id}
-                className={`cursor-grab flex bg-light-bg-faded dark:bg-dark-bg-faded border-b-2 border-light-text dark:border-dark-text bg-light-bg-primary dark:bg-dark-bg-primary`}
+                className={`cursor-grab flex bg-light-bg-faded dark:bg-dark-bg-faded border-b-2 border-light-text dark:border-dark-text bg-light-bg-secondary dark:bg-dark-bg-secondary`}
                 draggable
                 onDragStart={(e) => handleDragStart(e, task)}
                 onDragOver={(e) => e.preventDefault()}
@@ -82,7 +82,7 @@ const Column = ({ board, column, selectedColumnName, setIsMovingTask, setSelecte
     );
   } else {
     return (
-      <section className='bg-light-bg-secondary dark:bg-dark-bg-secondary' onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onDragEnter={handleDragEnter}>
+      <section className='bg-light-bg-primary dark:bg-dark-bg-primary' onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onDragEnter={handleDragEnter}>
         <h2
           className={`text-center py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 hover:bg-red-500 md:hover:bg-red-400 dark:bg-cyan-700 dark:hover:bg-cyan-800 dark:md:hover:bg-cyan-700' : column.name === 'Current' ? 'bg-orange-400 hover:bg-orange-500 md:hover:bg-orange-400 dark:bg-blue-700 dark:hover:bg-blue-800 dark:md:hover:bg-blue-700' : 'bg-yellow-400 hover:bg-yellow-500 md:hover:bg-yellow-400 dark:bg-purple-800 dark:hover:bg-purple-900 dark:md:hover:bg-purple-800'}`}
           onClick={() => isMobile && setSelectedColumnName(column.name)}
