@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import BaseModal from './BaseModal';
+import { isValidTaskDetails, addTaskFinish } from '../../utils/taskUtils';
+import { getTodaysDate, getDateOneYearFromNow } from '../../utils/dateTimeUtils';
 
-const AddTaskModal = ({ addingTask, newTaskName, taskDate, taskTime, validTaskDateTime, selectedBoardName, onClose, setAddingTask, setNewTaskName, setTaskDate, setTaskTime, isValidTaskDetails, setValidTaskDateTime, addTaskFinish, getTodaysDate, getDateOneYearFromNow }) => {
+const AddTaskModal = ({ addingTask, newTaskName, taskDate, taskTime, validTaskDateTime, selectedBoardName, onClose, setAddingTask, setNewTaskName, setTaskDate, setTaskTime, setValidTaskDateTime }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValidTaskDetails(newTaskName, taskDate, taskTime, setValidTaskDateTime)) {
@@ -68,11 +70,7 @@ AddTaskModal.propTypes = {
   setNewTaskName: PropTypes.func.isRequired,
   setTaskDate: PropTypes.func.isRequired,
   setTaskTime: PropTypes.func.isRequired,
-  isValidTaskDetails: PropTypes.func.isRequired,
   setValidTaskDateTime: PropTypes.func.isRequired,
-  addTaskFinish: PropTypes.func.isRequired,
-  getTodaysDate: PropTypes.func.isRequired,
-  getDateOneYearFromNow: PropTypes.func.isRequired,
 };
 
 export default AddTaskModal;

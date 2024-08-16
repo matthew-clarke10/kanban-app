@@ -3,24 +3,27 @@ import BaseModal from './BaseModal';
 import { isValidBoardName, addBoardFinish } from '../../utils/boardUtils';
 
 const AddBoardModal = ({ newBoardName, validBoardName, onClose, setNewBoardName, setValidBoardName, setSelectedBoardName, setIsAddingBoard, setBoards }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValidBoardName(newBoardName, setValidBoardName)) {
+      setValidBoardName(true);
+      addBoardFinish(newBoardName, setNewBoardName, setIsAddingBoard, setBoards, setSelectedBoardName, onClose)
+    } else {
+      setValidBoardName(false);
+    }
+  }
+
   return (
     <section className='fixed inset-0 flex flex-1 items-center justify-center z-50 bg-black bg-opacity-50 h-0 gap-y-2'>
       <BaseModal
         onClose={onClose}
         title="Add Board"
         confirmButtonText="Add"
-        onConfirm={() => {
-          if (isValidBoardName(newBoardName, setValidBoardName)) {
-            setValidBoardName(true);
-            addBoardFinish(newBoardName, setNewBoardName, setIsAddingBoard, setBoards, setSelectedBoardName, onClose)
-          } else {
-            setValidBoardName(false);
-          }
-        }}
+        onConfirm={handleSubmit}
         cancelButtonText="Cancel"
         onCancel={onClose}
       >
-        <form className='flex flex-col gap-y-4 justify-between items-center'>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-y-4 justify-between items-center'>
           <input
             type="text"
             placeholder="Enter name"
