@@ -2,24 +2,27 @@ import PropTypes from 'prop-types';
 import BaseModal from './BaseModal';
 
 const EditTaskModal = ({ editingTask, editingColumn, validTaskDateTime, selectedBoardName, onClose, setEditingTask, setEditingColumn, isValidTaskDetails, setValidTaskDateTime, editTaskFinish, getTodaysDate, getDateOneYearFromNow }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValidTaskDetails(editingTask.name, editingTask.date, editingTask.time, setValidTaskDateTime)) {
+      setValidTaskDateTime(true);
+      editTaskFinish(selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose);
+    } else {
+      setValidTaskDateTime(false);
+    }
+  }
+
   return (
     <section className='fixed inset-0 flex flex-1 items-center justify-center z-50 bg-black bg-opacity-50 h-0 gap-y-2'>
       <BaseModal
         onClose={onClose}
         title="Edit Task"
         confirmButtonText="Save"
-        onConfirm={() => {
-          if (isValidTaskDetails(editingTask.name, editingTask.date, editingTask.time, setValidTaskDateTime)) {
-            setValidTaskDateTime(true);
-            editTaskFinish(selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose);
-          } else {
-            setValidTaskDateTime(false);
-          }
-        }}
+        onConfirm={handleSubmit}
         cancelButtonText="Cancel"
         onCancel={onClose}
       >
-        <form className='flex flex-col gap-y-4 justify-between items-center'>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-y-4 justify-between items-center'>
           <input
             type="text"
             placeholder="Enter name"

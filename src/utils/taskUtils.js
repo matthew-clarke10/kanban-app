@@ -130,10 +130,44 @@ export const deleteTaskCancel = () => {
   // TO-DO
 };
 
-export const moveTaskStart = () => {
-  // TO-DO
+export const moveTaskStart = (columnName, task, setIsMoveTaskOpen, setMovingColumn, setMovingTask) => {
+  setIsMoveTaskOpen(true);
+  setMovingColumn(columnName);
+  setMovingTask(task);
 };
 
-export const moveTaskFinish = () => {
-  // TO-DO
+export const moveTaskFinish = (selectedBoardName, movingColumn, movingTask, setMovingTask, setMovingColumn, onClose) => {
+  const boards = JSON.parse(localStorage.getItem('boards')) || [];
+  const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
+  if (boardIndex === -1) {
+    console.error('Board not found');
+    return;
+  }
+
+  const columnIndex = boards[boardIndex].columns.findIndex(column => column.name === movingColumn);
+  if (columnIndex === -1) {
+    console.error('Column not found');
+    return;
+  }
+
+  boards[boardIndex].columns.forEach((column) => {
+    column.tasks.forEach((task, taskIndex) => {
+      if (task.id === movingTask.id) {
+        if (column.name === movingColumn) {
+          setMovingTask(null);
+          setMovingColumn(null);
+          onClose();
+          return;
+        } else {
+          column.tasks.splice(taskIndex, 1);
+          boards[boardIndex].columns[columnIndex].tasks.push(movingTask);
+          localStorage.setItem('boards', JSON.stringify(boards));
+          setMovingTask(null);
+          setMovingColumn(null);
+          onClose();
+          return;
+        }
+      }
+    });
+  });
 };

@@ -30,11 +30,13 @@ const Home = () => {
   const [taskTime, setTaskTime] = useState('');
   const [validTaskDateTime, setValidTaskDateTime] = useState(true);
   const [editingTask, setEditingTask] = useState(null);
+  const [movingTask, setMovingTask] = useState(null);
   const [isCreateBoardOpen, setIsCreateBoardOpen] = useState(false);
   const [isRemoveBoardOpen, setIsRemoveBoardOpen] = useState(false);
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const [isEditTaskOpen, setIsEditTaskOpen] = useState(false);
   const [editingColumn, setEditingColumn] = useState(null);
+  const [movingColumn, setMovingColumn] = useState(null);
   const [isDeleteTaskOpen, setIsDeleteTaskOpen] = useState(false);
   const [isMoveTaskOpen, setIsMoveTaskOpen] = useState(false);
 
@@ -129,7 +131,7 @@ const Home = () => {
 
       {isMoveTaskOpen && (
         <MoveTaskModal
-          addingTask={addingTask} newTaskName={newTaskName} taskDate={taskDate} taskTime={taskTime} validTaskDateTime={validTaskDateTime} selectedBoardName={selectedBoardName} onClose={() => setIsMoveTaskOpen(false)} setAddingTask={setAddingTask} setNewTaskName={setNewTaskName} setTaskDate={setTaskDate} setTaskTime={setTaskTime} isValidTaskDetails={isValidTaskDetails} setValidTaskDateTime={setValidTaskDateTime} addTaskFinish={addTaskFinish} getTodaysDate={getTodaysDate} getDateOneYearFromNow={getDateOneYearFromNow}
+          movingTask={movingTask} movingColumn={movingColumn} selectedBoardName={selectedBoardName} onClose={() => setIsMoveTaskOpen(false)} setMovingTask={setMovingTask} setMovingColumn={setMovingColumn} moveTaskFinish={moveTaskFinish}
         />
       )}
 
@@ -158,7 +160,7 @@ const Home = () => {
                 onAddTask={() => { addTaskStart(column.name, setIsCreateTaskOpen, setAddingTask) }}
                 onTaskEdit={(task) => editTaskStart(column.name, task, setIsEditTaskOpen, setEditingColumn, setEditingTask)}
                 onTaskDelete={(task) => deleteTaskStart(column.name, task, setIsDeleteTaskOpen, setEditingColumn, setEditingTask)}
-                onTaskMove={deleteTaskStart}
+                onTaskMove={(task) => moveTaskStart(column.name, task, setIsMoveTaskOpen, setMovingColumn, setMovingTask)}
               />
             </section>
           ))}

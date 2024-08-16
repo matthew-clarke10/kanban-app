@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import BaseModal from './BaseModal';
 
-const MoveTaskModal = ({ addingTask, newTaskName, taskDate, taskTime, validTaskDateTime, selectedBoardName, onClose, setAddingTask, setNewTaskName, setTaskDate, setTaskTime, isValidTaskDetails, setValidTaskDateTime, addTaskFinish, getTodaysDate, getDateOneYearFromNow }) => {
+const MoveTaskModal = ({ movingTask, movingColumn, selectedBoardName, onClose, setMovingTask, setMovingColumn, moveTaskFinish }) => {
   return (
     <section className='fixed inset-0 flex flex-1 items-center justify-center z-50 bg-black bg-opacity-50 h-0 gap-y-2'>
       <BaseModal
@@ -9,67 +9,40 @@ const MoveTaskModal = ({ addingTask, newTaskName, taskDate, taskTime, validTaskD
         title="Move Task"
         confirmButtonText="Move"
         onConfirm={() => {
-          if (isValidTaskDetails(newTaskName, taskDate, taskTime, setValidTaskDateTime)) {
-            setValidTaskDateTime(true);
-            addTaskFinish(selectedBoardName, taskDate, taskTime, addingTask, newTaskName, setNewTaskName, setAddingTask, onClose);
-          } else {
-            setValidTaskDateTime(false);
-          }
+          moveTaskFinish(selectedBoardName, movingColumn, movingTask, setMovingTask, setMovingColumn, onClose)
         }}
         cancelButtonText="Cancel"
         onCancel={onClose}
       >
-        <form className='flex flex-col gap-y-4 justify-between items-center'>
-          <input
-            type="text"
-            placeholder="Enter name"
-            value={newTaskName}
-            onChange={(e) => setNewTaskName(e.target.value)}
-            required
-            className="rounded-full w-4/5 px-8 py-3 bg-light-bg-secondary text-light-text dark:bg-dark-bg-secondary dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text"
-          />
-          <input
-            type="date"
-            value={taskDate}
-            onChange={(e) => setTaskDate(e.target.value)}
-            required
-            min={getTodaysDate()}
-            max={getDateOneYearFromNow()}
-            className="rounded-full w-4/5 px-8 py-3 bg-light-bg-secondary text-light-text dark:bg-dark-bg-secondary dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text"
-          />
-          <input
-            type="time"
-            value={taskTime}
-            onChange={(e) => setTaskTime(e.target.value)}
-            required
-            className="rounded-full w-4/5 px-8 py-3 bg-light-bg-secondary text-light-text dark:bg-dark-bg-secondary dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-text dark:focus:ring-dark-text"
-          />
-          {!validTaskDateTime && (
-            <div className='text-red-600 text-xl'>The task details are invalid.</div>
-          )}
-        </form>
+        <section className='flex flex-col gap-y-4 justify-between items-center'>
+          <button onClick={() => setMovingColumn('Upcoming')} className={`flex justify-center items-center w-full py-4 border-2 text-lg border-light-text dark:border-dark-text ${movingColumn === 'Upcoming' ? 'bg-light-board dark:bg-dark-board' : 'bg-light-bg-secondary dark:bg-dark-bg-secondary hover:bg-light-board dark:hover:bg-dark-board hover:opacity-80'}`}>
+            <span className={`overflow-hidden text-ellipsis whitespace-nowrap ${movingColumn === 'Upcoming' ? 'bg-light-board dark:bg-dark-board' : ''}`}>Upcoming</span>
+          </button>
+          <button onClick={() => setMovingColumn('Current')} className={`flex justify-center items-center w-full py-4 border-2 text-lg border-light-text dark:border-dark-text ${movingColumn === 'Current' ? 'bg-light-board dark:bg-dark-board' : 'bg-light-bg-secondary dark:bg-dark-bg-secondary hover:bg-light-board dark:hover:bg-dark-board hover:opacity-80'}`}>
+            <span className={`overflow-hidden text-ellipsis whitespace-nowrap ${movingColumn === 'Current' ? 'bg-light-board dark:bg-dark-board' : ''}`}>Current</span>
+          </button>
+          <button onClick={() => setMovingColumn('Finished')} className={`flex justify-center items-center w-full py-4 border-2 text-lg border-light-text dark:border-dark-text ${movingColumn === 'Finished' ? 'bg-light-board dark:bg-dark-board' : 'bg-light-bg-secondary dark:bg-dark-bg-secondary hover:bg-light-board dark:hover:bg-dark-board hover:opacity-80'}`}>
+            <span className={`overflow-hidden text-ellipsis whitespace-nowrap ${movingColumn === 'Finished' ? 'bg-light-board dark:bg-dark-board' : ''}`}>Finished</span>
+          </button>
+        </section>
       </BaseModal>
     </section>
   );
 };
 
 MoveTaskModal.propTypes = {
-  addingTask: PropTypes.string.isRequired,
-  newTaskName: PropTypes.string.isRequired,
-  taskDate: PropTypes.string.isRequired,
-  taskTime: PropTypes.string.isRequired,
-  validTaskDateTime: PropTypes.bool.isRequired,
+  movingTask: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+  }).isRequired,
+  movingColumn: PropTypes.string.isRequired,
   selectedBoardName: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
-  setAddingTask: PropTypes.func.isRequired,
-  setNewTaskName: PropTypes.func.isRequired,
-  setTaskDate: PropTypes.func.isRequired,
-  setTaskTime: PropTypes.func.isRequired,
-  isValidTaskDetails: PropTypes.func.isRequired,
-  setValidTaskDateTime: PropTypes.func.isRequired,
-  addTaskFinish: PropTypes.func.isRequired,
-  getTodaysDate: PropTypes.func.isRequired,
-  getDateOneYearFromNow: PropTypes.func.isRequired,
+  setMovingTask: PropTypes.func.isRequired,
+  setMovingColumn: PropTypes.func.isRequired,
+  moveTaskFinish: PropTypes.func.isRequired,
 };
 
 export default MoveTaskModal;
