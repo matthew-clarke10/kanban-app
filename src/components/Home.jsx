@@ -61,7 +61,7 @@ const Home = () => {
     setTaskDate('');
     setTaskTime('');
     setValidTaskDateTime(true);
-  }, [isCreateTaskOpen]);
+  }, [isCreateTaskOpen, isEditTaskOpen]);
 
   // No boards created yet.
   if (boards.length === 0 && !isAddingBoard) {
@@ -123,7 +123,7 @@ const Home = () => {
 
       {isDeleteTaskOpen && (
         <DeleteTaskModal
-          addingTask={addingTask} newTaskName={newTaskName} taskDate={taskDate} taskTime={taskTime} validTaskDateTime={validTaskDateTime} selectedBoardName={selectedBoardName} onClose={() => setIsDeleteTaskOpen(false)} setAddingTask={setAddingTask} setNewTaskName={setNewTaskName} setTaskDate={setTaskDate} setTaskTime={setTaskTime} isValidTaskDetails={isValidTaskDetails} setValidTaskDateTime={setValidTaskDateTime} addTaskFinish={addTaskFinish} getTodaysDate={getTodaysDate} getDateOneYearFromNow={getDateOneYearFromNow}
+          editingTask={editingTask} editingColumn={editingColumn} selectedBoardName={selectedBoardName} onClose={() => setIsDeleteTaskOpen(false)} setEditingTask={setEditingTask} setEditingColumn={setEditingColumn} deleteTaskFinish={deleteTaskFinish}
         />
       )}
 
@@ -157,7 +157,7 @@ const Home = () => {
                 setSelectedColumnName={setSelectedColumnName}
                 onAddTask={() => { addTaskStart(column.name, setIsCreateTaskOpen, setAddingTask) }}
                 onTaskEdit={(task) => editTaskStart(column.name, task, setIsEditTaskOpen, setEditingColumn, setEditingTask)}
-                onTaskDelete={deleteTaskStart}
+                onTaskDelete={(task) => deleteTaskStart(column.name, task, setIsDeleteTaskOpen, setEditingColumn, setEditingTask)}
                 onTaskMove={deleteTaskStart}
               />
             </section>

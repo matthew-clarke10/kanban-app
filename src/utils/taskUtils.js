@@ -94,12 +94,36 @@ export const editTaskCancel = () => {
   // TO-DO
 };
 
-export const deleteTaskStart = () => {
-  // TO-DO
+export const deleteTaskStart = (columnName, task, setIsDeleteTaskOpen, setEditingColumn, setEditingTask) => {
+  setIsDeleteTaskOpen(true);
+  setEditingColumn(columnName);
+  setEditingTask(task);
 };
 
-export const deleteTaskFinish = () => {
-  // TO-DO
+export const deleteTaskFinish = (selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose) => {
+  const boards = JSON.parse(localStorage.getItem('boards')) || [];
+  const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
+  if (boardIndex === -1) {
+    console.error('Board not found');
+    return;
+  }
+
+  const columnIndex = boards[boardIndex].columns.findIndex(column => column.name === editingColumn);
+  if (columnIndex === -1) {
+    console.error('Column not found');
+    return;
+  }
+
+  boards[boardIndex].columns[columnIndex].tasks.forEach((task, index) => {
+    if (task.id === editingTask.id) {
+      boards[boardIndex].columns[columnIndex].tasks.splice(index, 1);
+    }
+  });
+
+  localStorage.setItem('boards', JSON.stringify(boards));
+  setEditingTask(null);
+  setEditingColumn(null);
+  onClose();
 };
 
 export const deleteTaskCancel = () => {
