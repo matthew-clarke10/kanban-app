@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import BaseModal from './BaseModal';
 
-const CreateTaskModal = ({ addingTask, newTaskName, taskDate, taskTime, validTaskDateTime, selectedBoardName, onClose, setAddingTask, setNewTaskName, setTaskDate, setTaskTime, isValidTaskDetails, setValidTaskDateTime, addTaskFinish, getTodaysDate, getDateOneYearFromNow }) => {
+const AddTaskModal = ({ addingTask, newTaskName, taskDate, taskTime, validTaskDateTime, selectedBoardName, onClose, setAddingTask, setNewTaskName, setTaskDate, setTaskTime, isValidTaskDetails, setValidTaskDateTime, addTaskFinish, getTodaysDate, getDateOneYearFromNow }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValidTaskDetails(newTaskName, taskDate, taskTime, setValidTaskDateTime)) {
@@ -56,7 +56,7 @@ const CreateTaskModal = ({ addingTask, newTaskName, taskDate, taskTime, validTas
   );
 };
 
-CreateTaskModal.propTypes = {
+AddTaskModal.propTypes = {
   addingTask: PropTypes.string.isRequired,
   newTaskName: PropTypes.string.isRequired,
   taskDate: PropTypes.string.isRequired,
@@ -75,4 +75,4 @@ CreateTaskModal.propTypes = {
   getDateOneYearFromNow: PropTypes.func.isRequired,
 };
 
-export default CreateTaskModal;
+export default AddTaskModal;

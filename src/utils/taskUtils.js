@@ -10,8 +10,8 @@ export const isValidTaskDetails = (taskName, taskDate, taskTime, setValidTaskDat
   }
 };
 
-export const addTaskStart = (columnName, setIsCreateTaskOpen, setAddingTask) => {
-  setIsCreateTaskOpen(true);
+export const addTaskStart = (columnName, setIsAddTaskOpen, setAddingTask) => {
+  setIsAddTaskOpen(true);
   setAddingTask(columnName);
 };
 
@@ -53,18 +53,13 @@ export const addTaskFinish = (selectedBoardName, taskDate, taskTime, addingTask,
   onClose();
 };
 
-export const addTaskCancel = (setAddingTask, setIsModalOpen) => {
-  setAddingTask(null);
-  setIsModalOpen(false);
-};
-
-export const editTaskStart = (columnName, task, setIsEditTaskOpen, setEditingColumn, setEditingTask) => {
+export const editTask = (columnName, task, setIsEditTaskOpen, setEditingColumn, setEditingTask) => {
   setIsEditTaskOpen(true);
   setEditingColumn(columnName);
   setEditingTask(task);
 };
 
-export const editTaskFinish = (selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose) => {
+export const saveTask = (selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose) => {
   const boards = JSON.parse(localStorage.getItem('boards')) || [];
   const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
   if (boardIndex === -1) {
@@ -90,17 +85,7 @@ export const editTaskFinish = (selectedBoardName, editingColumn, editingTask, se
   onClose();
 };
 
-export const editTaskCancel = () => {
-  // TO-DO
-};
-
-export const deleteTaskStart = (columnName, task, setIsDeleteTaskOpen, setEditingColumn, setEditingTask) => {
-  setIsDeleteTaskOpen(true);
-  setEditingColumn(columnName);
-  setEditingTask(task);
-};
-
-export const deleteTaskFinish = (selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose) => {
+export const deleteTask = (selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose) => {
   const boards = JSON.parse(localStorage.getItem('boards')) || [];
   const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
   if (boardIndex === -1) {
@@ -126,25 +111,15 @@ export const deleteTaskFinish = (selectedBoardName, editingColumn, editingTask, 
   onClose();
 };
 
-export const deleteTaskCancel = () => {
-  // TO-DO
-};
-
-export const moveTaskStart = (columnName, task, setIsMoveTaskOpen, setMovingColumn, setMovingTask) => {
-  setIsMoveTaskOpen(true);
-  setMovingColumn(columnName);
-  setMovingTask(task);
-};
-
-export const moveTaskFinish = (selectedBoardName, movingColumn, movingTask, setMovingTask, setMovingColumn, onClose) => {
+export const moveTask = (boardName, columnName, movedTask) => {
   const boards = JSON.parse(localStorage.getItem('boards')) || [];
-  const boardIndex = boards.findIndex(board => board.name === selectedBoardName);
+  const boardIndex = boards.findIndex(board => board.name === boardName);
   if (boardIndex === -1) {
     console.error('Board not found');
     return;
   }
 
-  const columnIndex = boards[boardIndex].columns.findIndex(column => column.name === movingColumn);
+  const columnIndex = boards[boardIndex].columns.findIndex(column => column.name === columnName);
   if (columnIndex === -1) {
     console.error('Column not found');
     return;
@@ -152,19 +127,13 @@ export const moveTaskFinish = (selectedBoardName, movingColumn, movingTask, setM
 
   boards[boardIndex].columns.forEach((column) => {
     column.tasks.forEach((task, taskIndex) => {
-      if (task.id === movingTask.id) {
-        if (column.name === movingColumn) {
-          setMovingTask(null);
-          setMovingColumn(null);
-          onClose();
+      if (task.id === movedTask.id) {
+        if (column.name === columnName) {
           return;
         } else {
           column.tasks.splice(taskIndex, 1);
-          boards[boardIndex].columns[columnIndex].tasks.push(movingTask);
+          boards[boardIndex].columns[columnIndex].tasks.push(movedTask);
           localStorage.setItem('boards', JSON.stringify(boards));
-          setMovingTask(null);
-          setMovingColumn(null);
-          onClose();
           return;
         }
       }

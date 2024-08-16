@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 import BaseModal from './BaseModal';
+import { isValidTaskDetails, saveTask, deleteTask } from '../../utils/taskUtils';
+import { getTodaysDate, getDateOneYearFromNow } from '../../utils/dateTimeUtils';
 
-const EditTaskModal = ({ editingTask, editingColumn, validTaskDateTime, selectedBoardName, onClose, setEditingTask, setEditingColumn, isValidTaskDetails, setValidTaskDateTime, editTaskFinish, getTodaysDate, getDateOneYearFromNow }) => {
+const EditTaskModal = ({ editingTask, editingColumn, validTaskDateTime, selectedBoardName, onClose, setEditingTask, setEditingColumn, setValidTaskDateTime }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValidTaskDetails(editingTask.name, editingTask.date, editingTask.time, setValidTaskDateTime)) {
       setValidTaskDateTime(true);
-      editTaskFinish(selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose);
+      saveTask(selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose);
     } else {
       setValidTaskDateTime(false);
     }
@@ -19,8 +21,8 @@ const EditTaskModal = ({ editingTask, editingColumn, validTaskDateTime, selected
         title="Edit Task"
         confirmButtonText="Save"
         onConfirm={handleSubmit}
-        cancelButtonText="Cancel"
-        onCancel={onClose}
+        cancelButtonText="Delete"
+        onCancel={() => { deleteTask(selectedBoardName, editingColumn, editingTask, setEditingTask, setEditingColumn, onClose) }}
       >
         <form onSubmit={handleSubmit} className='flex flex-col gap-y-4 justify-between items-center'>
           <input
@@ -69,11 +71,7 @@ EditTaskModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   setEditingTask: PropTypes.func.isRequired,
   setEditingColumn: PropTypes.func.isRequired,
-  isValidTaskDetails: PropTypes.func.isRequired,
   setValidTaskDateTime: PropTypes.func.isRequired,
-  editTaskFinish: PropTypes.func.isRequired,
-  getTodaysDate: PropTypes.func.isRequired,
-  getDateOneYearFromNow: PropTypes.func.isRequired,
 };
 
 export default EditTaskModal;

@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import BaseModal from './BaseModal';
 import { isValidBoardName, addBoardFinish } from '../../utils/boardUtils';
 
-const CreateBoardModal = ({ newBoardName, validBoardName, onClose, setNewBoardName, setValidBoardName, setSelectedBoardName, setIsAddingBoard, setBoards }) => {
+const AddBoardModal = ({ newBoardName, validBoardName, onClose, setNewBoardName, setValidBoardName, setSelectedBoardName, setIsAddingBoard, setBoards }) => {
   return (
     <section className='fixed inset-0 flex flex-1 items-center justify-center z-50 bg-black bg-opacity-50 h-0 gap-y-2'>
       <BaseModal
         onClose={onClose}
-        title="New Board"
+        title="Add Board"
         confirmButtonText="Add"
         onConfirm={() => {
           if (isValidBoardName(newBoardName, setValidBoardName)) {
@@ -36,7 +36,7 @@ const CreateBoardModal = ({ newBoardName, validBoardName, onClose, setNewBoardNa
   );
 };
 
-CreateBoardModal.propTypes = {
+AddBoardModal.propTypes = {
   newBoardName: PropTypes.string.isRequired,
   validBoardName: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -47,4 +47,4 @@ CreateBoardModal.propTypes = {
   setBoards: PropTypes.func.isRequired,
 };
 
-export default CreateBoardModal;
+export default AddBoardModal;

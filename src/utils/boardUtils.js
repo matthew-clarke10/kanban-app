@@ -16,8 +16,8 @@ export const loadBoards = (setSelectedBoardName) => {
   return boards;
 };
 
-export const addBoardStart = (setIsCreateBoardOpen, setIsAddingBoard) => {
-  setIsCreateBoardOpen(true);
+export const addBoardStart = (setIsAddBoardOpen, setIsAddingBoard) => {
+  setIsAddBoardOpen(true);
   setIsAddingBoard(true);
 };
 
@@ -55,23 +55,23 @@ export const addBoardCancel = (setIsAddingBoard, setIsModalOpen) => {
   setIsModalOpen(false);
 };
 
-export const removeBoardStart = (setIsRemoveBoardOpen, setIsRemovingBoard) => {
-  setIsRemoveBoardOpen(true);
-  setIsRemovingBoard(true);
+export const deleteBoardStart = (setIsDeleteBoardOpen, setIsDeletingBoard) => {
+  setIsDeleteBoardOpen(true);
+  setIsDeletingBoard(true);
 };
 
-export const removeBoardCancel = (setIsRemovingBoard, setIsModalOpen) => {
-  setIsRemovingBoard(false);
+export const deleteBoardCancel = (setIsDeletingBoard, setIsModalOpen) => {
+  setIsDeletingBoard(false);
   setIsModalOpen(false);
 };
 
-export const removeBoardFinish = (removedBoardName, selectedBoardName, setRemovedBoardName, setIsRemovingBoard, setBoards, setSelectedBoardName, onClose) => {
+export const deleteBoardFinish = (deletedBoardName, selectedBoardName, setDeletedBoardName, setIsDeletingBoard, setBoards, setSelectedBoardName, onClose) => {
   const existingBoards = JSON.parse(localStorage.getItem('boards')) || [];
-  const updatedBoards = existingBoards.filter(board => board.name !== removedBoardName);
+  const updatedBoards = existingBoards.filter(board => board.name !== deletedBoardName);
   localStorage.setItem('boards', JSON.stringify(updatedBoards));
   setBoards(updatedBoards);
 
-  if (removedBoardName === selectedBoardName) {
+  if (deletedBoardName === selectedBoardName) {
     if (updatedBoards.length > 0) {
       setSelectedBoardName(updatedBoards[0].name);
     } else {
@@ -79,7 +79,7 @@ export const removeBoardFinish = (removedBoardName, selectedBoardName, setRemove
     }
   }
 
-  setIsRemovingBoard(false);
-  setRemovedBoardName('');
+  setIsDeletingBoard(false);
+  setDeletedBoardName('');
   onClose();
 };
