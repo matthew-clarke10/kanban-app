@@ -46,7 +46,7 @@ const Column = ({ board, column, selectedColumnName, setSelectedColumnName, onAd
       <section className='flex flex-col flex-1 h-full bg-light-bg-primary dark:bg-dark-bg-primary' onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onDragEnter={handleDragEnter}>
         <section className='h-1/5'>
           <h2
-            className={`flex justify-center items-center h-3/5 text-center py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 dark:bg-cyan-700' : column.name === 'Current' ? 'bg-orange-400 dark:bg-blue-700' : 'bg-yellow-400 dark:bg-purple-800'}`}
+            className={`flex justify-center items-center h-3/5 text-center py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 dark:bg-cyan-600' : column.name === 'Current' ? 'bg-orange-400 dark:bg-blue-600' : 'bg-yellow-400 dark:bg-purple-700'}`}
             onClick={() => isMobile && setSelectedColumnName(column.name)}
           >
             {column.name}
