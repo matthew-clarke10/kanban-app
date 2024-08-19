@@ -32,7 +32,6 @@ const Home = () => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   const [isEditTaskOpen, setIsEditTaskOpen] = useState(false);
   const [editingColumn, setEditingColumn] = useState(null);
-  const [isMovingTask, setIsMovingTask] = useState(false);
 
   useEffect(() => {
     updateTheme();
@@ -40,8 +39,8 @@ const Home = () => {
 
 
   useEffect(() => {
-    setBoards(loadBoards(setSelectedBoardName));
-  }, [isMovingTask]);
+    setBoards(loadBoards(selectedBoardName, setSelectedBoardName));
+  }, [selectedBoardName, selectedColumnName]);
 
   useEffect(() => {
     setNewBoardName('');
@@ -161,7 +160,6 @@ const Home = () => {
                 board={selectedBoardName}
                 column={column}
                 selectedColumnName={selectedColumnName}
-                setIsMovingTask={setIsMovingTask}
                 setSelectedColumnName={setSelectedColumnName}
                 onAddTask={() => { addTaskStart(column.name, setIsAddTaskOpen, setAddingTask) }}
                 onEditTask={(task) => editTask(column.name, task, setIsEditTaskOpen, setEditingColumn, setEditingTask)}

@@ -111,7 +111,7 @@ export const deleteTask = (selectedBoardName, editingColumn, editingTask, setEdi
   onClose();
 };
 
-export const moveTask = (boardName, columnName, movedTask) => {
+export const moveTask = (boardName, columnName, movedTask, setSelectedColumnName, selectedColumnName) => {
   const boards = JSON.parse(localStorage.getItem('boards')) || [];
   const boardIndex = boards.findIndex(board => board.name === boardName);
   if (boardIndex === -1) {
@@ -128,14 +128,11 @@ export const moveTask = (boardName, columnName, movedTask) => {
   boards[boardIndex].columns.forEach((column) => {
     column.tasks.forEach((task, taskIndex) => {
       if (task.id === movedTask.id) {
-        if (column.name === columnName) {
-          return;
-        } else {
-          column.tasks.splice(taskIndex, 1);
-          boards[boardIndex].columns[columnIndex].tasks.push(movedTask);
-          localStorage.setItem('boards', JSON.stringify(boards));
-          return;
-        }
+        column.tasks.splice(taskIndex, 1);
+        boards[boardIndex].columns[columnIndex].tasks.push(movedTask);
+        localStorage.setItem('boards', JSON.stringify(boards));
+        setSelectedColumnName(columnName);
+        return;
       }
     });
   });

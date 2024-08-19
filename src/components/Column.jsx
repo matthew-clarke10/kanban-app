@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { convertTimeTo12Hour, formatDate } from '../utils/dateTimeUtils';
 import { moveTask } from '../utils/taskUtils';
 
-const Column = ({ board, column, selectedColumnName, setIsMovingTask, setSelectedColumnName, onAddTask, onEditTask }) => {
+const Column = ({ board, column, selectedColumnName, setSelectedColumnName, onAddTask, onEditTask }) => {
   const [isMobile, setIsMobile] = useState(window.matchMedia("(max-width: 1024px)").matches);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const Column = ({ board, column, selectedColumnName, setIsMovingTask, setSelecte
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [board]);
 
   const sortTasksByDateTime = (tasks) => {
     return tasks.slice().sort((a, b) => {
@@ -26,7 +26,7 @@ const Column = ({ board, column, selectedColumnName, setIsMovingTask, setSelecte
 
   const handleDragStart = (e, task) => {
     e.dataTransfer.setData("application/json", JSON.stringify(task));
-    setIsMovingTask(true);
+    setSelectedColumnName(column.name);
   };
 
   const handleDragEnter = (e) => {
@@ -36,9 +36,7 @@ const Column = ({ board, column, selectedColumnName, setIsMovingTask, setSelecte
   const handleDrop = (e) => {
     e.preventDefault();
     const task = JSON.parse(e.dataTransfer.getData("application/json"));
-    moveTask(board, column.name, task);
-    setIsMovingTask(false);
-    setSelectedColumnName(column.name)
+    moveTask(board, column.name, task, setSelectedColumnName, selectedColumnName);
   };
 
   const sortedTasks = sortTasksByDateTime(column.tasks);
@@ -105,7 +103,6 @@ Column.propTypes = {
     })).isRequired,
   }).isRequired,
   selectedColumnName: PropTypes.string.isRequired,
-  setIsMovingTask: PropTypes.func.isRequired,
   setSelectedColumnName: PropTypes.func.isRequired,
   onAddTask: PropTypes.func.isRequired,
   onEditTask: PropTypes.func.isRequired,

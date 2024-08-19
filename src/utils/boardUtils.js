@@ -8,9 +8,9 @@ export const isValidBoardName = (newBoardName) => {
   }
 };
 
-export const loadBoards = (setSelectedBoardName) => {
+export const loadBoards = (selectedBoardName, setSelectedBoardName) => {
   const boards = JSON.parse(localStorage.getItem('boards')) || [];
-  if (boards.length !== 0) {
+  if (boards.length !== 0 && selectedBoardName === null) {
     setSelectedBoardName(boards[0].name);
   }
   return boards;
