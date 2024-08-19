@@ -17,7 +17,7 @@ export default {
         'dark-bg-tertiary': '#383838',
         'dark-bg-inactive': '#050505',
         'light-text': '#000',
-        'dark-text': '#B4B4B4',
+        'dark-text': '#FFF',
         'light-board': '#3B82F6',
         'dark-board': '#4338CA',
       },

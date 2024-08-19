@@ -46,12 +46,12 @@ const Column = ({ board, column, selectedColumnName, setSelectedColumnName, onAd
       <section className='flex flex-col flex-1 h-full bg-light-bg-primary dark:bg-dark-bg-primary' onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onDragEnter={handleDragEnter}>
         <section className='h-1/5'>
           <h2
-            className={`flex justify-center items-center h-3/5 text-center py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 dark:bg-cyan-600' : column.name === 'Current' ? 'bg-orange-400 dark:bg-blue-600' : 'bg-yellow-400 dark:bg-purple-700'}`}
+            className={`flex justify-center items-center h-3/5 text-center py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 dark:bg-red-600' : column.name === 'Current' ? 'bg-yellow-300 dark:bg-yellow-500' : 'bg-cyan-300 dark:bg-cyan-500'}`}
             onClick={() => isMobile && setSelectedColumnName(column.name)}
           >
             {column.name}
           </h2>
-          <button onClick={() => onAddTask()} className='h-2/5 bg-green-400 hover:bg-green-500 dark:bg-green-700 dark:hover:bg-green-800 w-full py-1 sm:py-2 text-base sm:text-xl border-y-2 border-light-text dark:border-dark-text'>Add</button>
+          <button onClick={() => onAddTask()} className='h-2/5 bg-lime-300 hover:bg-lime-400 dark:bg-lime-600 dark:hover:bg-lime-700 w-full py-1 sm:py-2 text-base sm:text-xl border-y-2 border-light-text dark:border-dark-text'>Add</button>
         </section>
         <section className={`flex flex-col ${sortedTasks.length === 0 ? 'justify-center items-center' : ''} flex-1 h-4/5`}>
           {sortedTasks.length > 0 ? (
@@ -82,7 +82,7 @@ const Column = ({ board, column, selectedColumnName, setSelectedColumnName, onAd
     return (
       <section className='bg-light-bg-primary dark:bg-dark-bg-primary' onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onDragEnter={handleDragEnter}>
         <h2
-          className={`text-center py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 hover:bg-red-500 md:hover:bg-red-400 dark:bg-cyan-700 dark:hover:bg-cyan-800 dark:md:hover:bg-cyan-700' : column.name === 'Current' ? 'bg-orange-400 hover:bg-orange-500 md:hover:bg-orange-400 dark:bg-blue-700 dark:hover:bg-blue-800 dark:md:hover:bg-blue-700' : 'bg-yellow-400 hover:bg-yellow-500 md:hover:bg-yellow-400 dark:bg-purple-800 dark:hover:bg-purple-900 dark:md:hover:bg-purple-800'}`}
+          className={`text-center py-2 sm:py-4 text-xl sm:text-3xl ${column.name === 'Upcoming' ? 'bg-red-400 hover:bg-red-500 md:hover:bg-red-400 dark:bg-red-600 dark:hover:bg-red-700 dark:md:hover:bg-red-600' : column.name === 'Current' ? 'bg-yellow-300 hover:bg-yellow-400 md:hover:bg-yellow-500 dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:md:hover:bg-yellow-500' : 'bg-cyan-300 hover:bg-cyan-400 md:hover:bg-cyan-300 dark:bg-cyan-500 dark:hover:bg-cyan-600 dark:md:hover:bg-cyan-500'} hover:cursor-pointer`}
           onClick={() => isMobile && setSelectedColumnName(column.name)}
         >
           {column.name}
